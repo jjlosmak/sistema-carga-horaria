@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carga Horária Docente</title>
+<style>
+  :root {
+    --bg: #f4f2ee;
+    --surface: #ffffff;
+    --ink: #1d2433;
+    --muted: #5d6576;
+    --line: #e2ded6;
+    --brand: #1f4e5f;
+    --brand-soft: #e3eef1;
+    --ok: #2f7d4f;
+    --ok-soft: #e2f1e7;
+    --warn: #a86a12;
+    --warn-soft: #fbf0dc;
+    --bad: #b23a3a;
+    --bad-soft: #f8e3e1;
+    --radius: 10px;
+    --font: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 var(--font); }
+  button, input, select { font: inherit; color: inherit; }
+
+  .demo-banner { background: #2b2f3a; color: #f1f1f1; text-align: center; padding: 6px 16px; font-size: 12.5px; }
+  .demo-banner b { color: #ffd27a; }
+
+  header.top {
+    background: var(--brand); color: #fff;
+    padding: 18px 28px 0; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 24px;
+  }
+  .brand h1 { margin: 0; font-size: 20px; letter-spacing: .2px; }
+  .brand p { margin: 2px 0 14px; opacity: .8; font-size: 13px; }
+  .semana-atual { margin-left: auto; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .semana-atual select { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35); color: #fff; border-radius: 6px; padding: 4px 8px; }
+  .semana-atual select option { color: var(--ink); }
+  nav.tabs { flex-basis: 100%; display: flex; gap: 4px; overflow-x: auto; }
+  nav.tabs button {
+    background: none; border: 0; color: rgba(255,255,255,.75); padding: 10px 14px; cursor: pointer;
+    border-radius: 8px 8px 0 0; white-space: nowrap; font-weight: 500;
+  }
+  nav.tabs button[aria-selected="true"] { background: var(--bg); color: var(--brand); }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 28px 48px; }
+  section[hidden] { display: none; }
+  h2 { font-size: 17px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 18px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 18px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .kpi .label { color: var(--muted); font-size: 12.5px; }
+  .kpi .valor { font-size: 26px; font-weight: 650; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .kpi .nota { font-size: 12px; color: var(--muted); }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin-bottom: 18px; }
+  .card h3 { margin: 0 0 12px; font-size: 14.5px; }
+  .grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; }
+  @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); font-weight: 600; }
+  td.num, th.num { text-align: right; }
+  tbody tr:hover { background: #faf9f6; }
+  .tabela-wrap { overflow-x: auto; }
+
+  .barra { position: relative; height: 8px; background: #ece9e3; border-radius: 4px; min-width: 90px; }
+  .barra > span { position: absolute; inset: 0 auto 0 0; border-radius: 4px; }
+  .chip { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .chip.ok { background: var(--ok-soft); color: var(--ok); }
+  .chip.warn { background: var(--warn-soft); color: var(--warn); }
+  .chip.bad { background: var(--bad-soft); color: var(--bad); }
+
+  .legenda { display: flex; gap: 16px; font-size: 12.5px; color: var(--muted); margin-top: 8px; flex-wrap: wrap; }
+  .legenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+
+  form.linha { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; align-items: end; }
+  label.campo { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--muted); }
+  label.campo input, label.campo select { height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--ink); font-size: 14px; }
+  .btn { background: var(--brand); color: #fff; border: 0; border-radius: 7px; padding: 9px 16px; cursor: pointer; font-weight: 600; }
+  .btn:disabled { opacity: .6; cursor: progress; }
+  .btn.sec { background: #fff; color: var(--brand); border: 1px solid var(--brand); }
+
+  .mapa { border-collapse: separate; border-spacing: 3px; width: auto; }
+  .mapa th, .mapa td { border: 0; padding: 0; }
+  .mapa th { font-size: 11px; text-transform: none; letter-spacing: 0; text-align: center; padding: 0 0 4px; }
+  .mapa th.nome { text-align: left; padding-right: 10px; white-space: nowrap; font-size: 12.5px; color: var(--ink); font-weight: 500; }
+  .mapa td.cel { width: 34px; height: 30px; text-align: center; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 600; }
+  .mapa td.cel:hover { outline: 2px solid var(--brand); }
+  .cel.vazia { background: #f0ede7; color: #b7b1a6; }
+  .cel.cheia { background: #cfe5d8; color: #1f5b37; }
+  .cel.parcial { background: #f6dfb6; color: #7a4d0c; }
+  .cel.zero { background: #f1c9c4; color: #8b2a2a; }
+  .cel.futura { background: transparent; border: 1px dashed var(--line); cursor: default; }
+  .cel.futura:hover { outline: none; }
+
+  .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 13.5px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.on { opacity: 1; }
+  .toast.erro { background: var(--bad); }
+
+  /* Ficha individual */
+  .ficha-ctrl { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; margin-bottom: 18px; }
+  .ficha { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 36px; max-width: 820px; }
+  .ficha header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--brand); padding-bottom: 12px; margin-bottom: 18px; gap: 16px; }
+  .ficha header h3 { margin: 0; font-size: 18px; color: var(--brand); }
+  .ficha header .meta { text-align: right; font-size: 12.5px; color: var(--muted); }
+  .ficha .ident { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+  .ficha .ident div span { display: block; font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+  .ficha .ident div b { font-size: 15px; }
+  .ficha .kpis { margin-bottom: 22px; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .ficha .kpi .valor { font-size: 22px; }
+  @media (max-width: 640px) { .ficha .kpis, .ficha .ident { grid-template-columns: 1fr 1fr; } .ficha { padding: 20px; } }
+  .ficha h4 { margin: 0 0 8px; font-size: 13.5px; }
+  .comparativo { margin: 4px 0 24px; }
+  .comparativo svg { width: 100%; height: auto; display: block; }
+  .comparativo p { margin: 6px 0 0; font-size: 12.5px; color: var(--muted); }
+  .assinaturas { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 44px; }
+  .assinaturas div { border-top: 1px solid var(--ink); padding-top: 6px; text-align: center; font-size: 12.5px; }
+
+  @media print {
+    @page { size: A4; margin: 14mm; }
+    body { background: #fff; }
+    .demo-banner, header.top, .ficha-ctrl, .toast, section:not(#aba-ficha) { display: none !important; }
+    main { padding: 0; max-width: none; }
+    .ficha { border: 0; padding: 0; max-width: none; }
+    .kpi { break-inside: avoid; }
+    .ficha th, .ficha td { padding: 4px 8px; font-size: 12px; }
+    .ficha .kpis { margin-bottom: 14px; }
+    .comparativo { margin-bottom: 14px; }
+    .assinaturas { margin-top: 36px; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner" id="demoBanner" hidden>
+  <b>Modo demonstração</b> · dados fictícios, nada é salvo. Na planilha real, os dados ficam no Google Sheets.
+</div>
+
+<header class="top">
+  <div class="brand">
+    <h1>Carga Horária Docente</h1>
+    <p>Semestre <span id="semestre">—</span> · acompanhamento de aulas previstas e dadas</p>
+  </div>
+  <label class="semana-atual">Semana atual
+    <select id="semanaAtual" aria-label="Semana atual do semestre"></select>
+  </label>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-aba="painel" aria-selected="true">Painel</button>
+    <button role="tab" data-aba="lancamentos" aria-selected="false">Lançamentos</button>
+    <button role="tab" data-aba="professores" aria-selected="false">Professores</button>
+    <button role="tab" data-aba="ficha" aria-selected="false">Ficha individual</button>
+  </nav>
+</header>
+
+<main>
+  <!-- PAINEL -->
+  <section id="aba-painel">
+    <h2>Visão geral</h2>
+    <p class="sub">Comparação entre o previsto até a semana atual e o que foi efetivamente dado.</p>
+    <div class="kpis" id="kpisGerais"></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Aulas por semana</h3>
+        <div id="graficoSemanas"></div>
+        <div class="legenda"><span><i style="background:var(--brand)"></i>Dadas</span><span><i style="background:#c9c3b7"></i>Previstas</span></div>
+      </div>
+      <div class="card">
+        <h3>Situação do corpo docente</h3>
+        <div id="resumoSituacao"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Por professor</h3>
+      <div class="tabela-wrap"><table id="tabelaProfessores"></table></div>
+    </div>
+  </section>
+
+  <!-- LANÇAMENTOS -->
+  <section id="aba-lancamentos" hidden>
+    <h2>Lançamento semanal</h2>
+    <p class="sub">Registre as aulas dadas na semana. Clique em uma célula do mapa para editar um lançamento.</p>
+    <div class="card">
+      <form class="linha" id="formLancamento">
+        <label class="campo">Semana <select name="semana" required></select></label>
+        <label class="campo" style="grid-column: span 2">Professor <select name="professorId" required></select></label>
+        <label class="campo">Aulas dadas <input name="aulasDadas" type="number" min="0" step="1" required></label>
+        <label class="campo">Horas <input name="horas" type="number" min="0" step="0.1" required></label>
+        <label class="campo" style="grid-column: span 2">Observação <input name="observacao" placeholder="Ex.: reposição na semana 14"></label>
+        <button class="btn" type="submit">Salvar lançamento</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Mapa do semestre (aulas dadas por semana)</h3>
+      <div class="tabela-wrap"><table class="mapa" id="mapa"></table></div>
+      <div class="legenda">
+        <span><i style="background:#cfe5d8"></i>Completa</span>
+        <span><i style="background:#f6dfb6"></i>Parcial</span>
+        <span><i style="background:#f1c9c4"></i>Nenhuma aula</span>
+        <span><i style="background:#f0ede7"></i>Sem lançamento</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFESSORES -->
+  <section id="aba-professores" hidden>
+    <h2>Professores</h2>
+    <p class="sub">Cadastro do corpo docente e da carga semanal prevista.</p>
+    <div class="card">
+      <form class="linha" id="formProfessor">
+        <input type="hidden" name="id">
+        <label class="campo" style="grid-column: span 2">Nome <input name="nome" required></label>
+        <label class="campo" style="grid-column: span 2">Disciplina <input name="disciplina"></label>
+        <label class="campo">Turma <input name="turma"></label>
+        <label class="campo">Aulas por semana <input name="aulasPorSemana" type="number" min="0" step="1" required></label>
+        <button class="btn" type="submit">Salvar professor</button>
+        <button class="btn sec" type="reset">Limpar</button>
+      </form>
+    </div>
+    <div class="card"><div class="tabela-wrap"><table id="tabelaCadastro"></table></div></div>
+  </section>
+
+  <!-- FICHA INDIVIDUAL -->
+  <section id="aba-ficha" hidden>
+    <div class="ficha-ctrl">
+      <label class="campo" style="min-width:280px">Professor <select id="fichaProfessor"></select></label>
+      <button class="btn" onclick="window.print()">Imprimir ficha</button>
+    </div>
+    <div class="ficha" id="ficha"></div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ======================================================================
+   Camada de dados: usa google.script.run no Apps Script, ou dados
+   fictícios em memória quando aberto direto no navegador (modo demo).
+   ====================================================================== */
+const DEMO = !(window.google && google.script && google.script.run);
+
+function chamar(fn, ...args) {
+  if (!DEMO) {
+    return new Promise((ok, falha) =>
+      google.script.run.withSuccessHandler(ok).withFailureHandler(e => falha(e))[fn](...args));
+  }
+  return Promise.resolve(Demo[fn](...args));
+}
+
+const Demo = (() => {
+  const professores = [
+    ['P001', 'Ana Lúcia Bezerra', 'Anatomia Humana', 'S1', 4],
+    ['P002', 'Bruno Castelo Nogueira', 'Bioquímica', 'S1', 3],
+    ['P003', 'Carla Fontenele Dias', 'Saúde Coletiva', 'S2', 2],
+    ['P004', 'Diego Aragão Pinheiro', 'Farmacologia', 'S3', 4],
+    ['P005', 'Elaine Moura Sampaio', 'Semiologia', 'S4', 3],
+    ['P006', 'Fábio Rolim Cavalcante', 'Bioestatística', 'S2', 2],
+    ['P007', 'Gabriela Torres Lins', 'Ética Profissional', 'S5', 2],
+    ['P008', 'Henrique Sá Barreto', 'Metodologia Científica', 'S1', 2],
+  ];
+  // mesma regra de geração de exemplo usada no Code.gs
+  const perfil = [0.98, 0.88, 1.0, 0.8, 0.95, 0.72, 0.97, 0.9];
+  const pseudoAleatorio = (i, s) => { const x = Math.sin((i + 1) * 12.9898 + s * 78.233) * 43758.5453; return x - Math.floor(x); };
+  const lancamentos = [];
+  professores.forEach((p, i) => {
+    for (let s = 1; s <= 12; s++) {
+      if (i === professores.length - 1 && s === 12) continue; // um lançamento ainda não feito
+      const r = pseudoAleatorio(i, s);
+      let dadas = p[4];
+      if (r > perfil[i]) dadas = Math.max(0, p[4] - (r > (1 + perfil[i]) / 2 + 0.02 ? 2 : 1));
+      const horas = Math.round(dadas * (1.5 + ((i + s) % 4) * 0.1) * 10) / 10;
+      lancamentos.push({ semana: s, professorId: p[0], aulasDadas: dadas, horas, observacao: dadas < p[4] ? 'Reposição pendente' : '' });
+    }
+  });
+  const db = {
+    parametros: { semestre: '2026.2', semanas: 18, semanaAtual: 12, horasPorAula: 1.67 },
+    professores: professores.map(p => ({ id: p[0], nome: p[1], disciplina: p[2], turma: p[3], aulasPorSemana: p[4], ativo: true })),
+    lancamentos,
+  };
+  const copia = () => JSON.parse(JSON.stringify(db));
+  return {
+    getDados: copia,
+    salvarLancamento(l) {
+      const i = db.lancamentos.findIndex(x => x.semana === +l.semana && x.professorId === l.professorId);
+      const novo = { semana: +l.semana, professorId: l.professorId, aulasDadas: +l.aulasDadas, horas: +l.horas, observacao: l.observacao || '' };
+      if (i >= 0) db.lancamentos[i] = novo; else db.lancamentos.push(novo);
+      return copia();
+    },
+    salvarProfessor(p) {
+      const id = p.id || 'P' + String(db.professores.length + 1).padStart(3, '0');
+      const novo = { id, nome: p.nome.trim(), disciplina: p.disciplina, turma: p.turma, aulasPorSemana: +p.aulasPorSemana, ativo: true };
+      const i = db.professores.findIndex(x => x.id === id);
+      if (i >= 0) db.professores[i] = novo; else db.professores.push(novo);
+      return copia();
+    },
+    salvarSemanaAtual(s) { db.parametros.semanaAtual = +s; return copia(); },
+  };
+})();
+
+/* ======================================================================
+   Cálculos
+   ====================================================================== */
+let D = null;
+
+function metricas(prof) {
+  const ate = D.parametros.semanaAtual;
+  const meus = D.lancamentos.filter(l => l.professorId === prof.id && l.semana <= ate);
+  const previstasAte = prof.aulasPorSemana * ate;
+  const previstasTotal = prof.aulasPorSemana * D.parametros.semanas;
+  const dadas = meus.reduce((s, l) => s + l.aulasDadas, 0);
+  const horas = meus.reduce((s, l) => s + l.horas, 0);
+  const cumprimento = previstasAte ? dadas / previstasAte : 0;
+  return {
+    previstasAte, previstasTotal, dadas, horas, cumprimento,
+    mediaHoras: dadas ? horas / dadas : 0,
+    pendentes: Math.max(0, previstasAte - dadas),
+    lancadas: meus.length,
+  };
+}
+
+function situacao(c) {
+  if (c >= 0.95) return { cls: 'ok', txt: 'Em dia', cor: 'var(--ok)' };
+  if (c >= 0.85) return { cls: 'warn', txt: 'Atenção', cor: 'var(--warn)' };
+  return { cls: 'bad', txt: 'Crítico', cor: 'var(--bad)' };
+}
+
+const fmt = {
+  int: n => n.toLocaleString('pt-BR'),
+  dec: (n, c = 1) => n.toLocaleString('pt-BR', { minimumFractionDigits: c, maximumFractionDigits: c }),
+  pct: n => Math.round(n * 100) + '%',
+};
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ativos = () => D.professores.filter(p => p.ativo);
+
+/* ======================================================================
+   Renderização
+   ====================================================================== */
+function renderTudo() {
+  document.getElementById('semestre').textContent = D.parametros.semestre;
+  const selSem = document.getElementById('semanaAtual');
+  selSem.innerHTML = Array.from({ length: D.parametros.semanas }, (_, i) =>
+    `<option value="${i + 1}" ${i + 1 === D.parametros.semanaAtual ? 'selected' : ''}>Semana ${i + 1} de ${D.parametros.semanas}</option>`).join('');
+  renderPainel();
+  renderLancamentos();
+  renderCadastro();
+  renderFicha();
+}
+
+function kpi(label, valor, nota = '') {
+  return `<div class="kpi"><div class="label">${label}</div><div class="valor">${valor}</div><div class="nota">${nota}</div></div>`;
+}
+
+function renderPainel() {
+  const lista = ativos().map(p => ({ p, m: metricas(p) }));
+  const prev = lista.reduce((s, x) => s + x.m.previstasAte, 0);
+  const dadas = lista.reduce((s, x) => s + x.m.dadas, 0);
+  const horas = lista.reduce((s, x) => s + x.m.horas, 0);
+  const sit = situacao(prev ? dadas / prev : 0);
+
+  document.getElementById('kpisGerais').innerHTML =
+    kpi('Aulas previstas até agora', fmt.int(prev), `até a semana ${D.parametros.semanaAtual}`) +
+    kpi('Aulas dadas', fmt.int(dadas), `${fmt.int(Math.max(0, prev - dadas))} a repor`) +
+    kpi('Cumprimento geral', `<span style="color:${sit.cor}">${fmt.pct(prev ? dadas / prev : 0)}</span>`, sit.txt) +
+    kpi('Horas registradas', fmt.dec(horas), `média de ${fmt.dec(dadas ? horas / dadas : 0, 2)} h por aula`);
+
+  // gráfico de barras: previstas x dadas por semana
+  const S = D.parametros.semanaAtual;
+  const semanas = Array.from({ length: S }, (_, i) => i + 1);
+  const previstaSemana = ativos().reduce((s, p) => s + p.aulasPorSemana, 0);
+  const dadasSemana = semanas.map(s => D.lancamentos.filter(l => l.semana === s && ativos().some(p => p.id === l.professorId))
+    .reduce((t, l) => t + l.aulasDadas, 0));
+  const W = 560, H = 210, pad = { l: 30, r: 8, t: 10, b: 24 };
+  const max = Math.max(previstaSemana, ...dadasSemana, 1);
+  const bw = (W - pad.l - pad.r) / S;
+  const y = v => pad.t + (H - pad.t - pad.b) * (1 - v / max);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Aulas dadas por semana comparadas ao previsto">`;
+  [0, 0.5, 1].forEach(f => {
+    const v = Math.round(max * f);
+    svg += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}" stroke="#ece9e3"/>` +
+           `<text x="${pad.l - 6}" y="${y(v) + 4}" font-size="10" text-anchor="end" fill="#8a8f9b">${v}</text>`;
+  });
+  semanas.forEach((s, i) => {
+    const x = pad.l + i * bw;
+    svg += `<rect x="${x + bw * 0.18}" y="${y(previstaSemana)}" width="${bw * 0.64}" height="${y(0) - y(previstaSemana)}" fill="#e6e1d8" rx="2"/>`;
+    svg += `<rect x="${x + bw * 0.18}" y="${y(dadasSemana[i])}" width="${bw * 0.64}" height="${y(0) - y(dadasSemana[i])}" fill="var(--brand)" rx="2"><title>Semana ${s}: ${dadasSemana[i]} de ${previstaSemana}</title></rect>`;
+    svg += `<text x="${x + bw / 2}" y="${H - 8}" font-size="10" text-anchor="middle" fill="#8a8f9b">${s}</text>`;
+  });
+  svg += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(previstaSemana)}" y2="${y(previstaSemana)}" stroke="#a39d91" stroke-dasharray="4 3"/>`;
+  document.getElementById('graficoSemanas').innerHTML = svg + '</svg>';
+
+  // resumo por situação
+  const grupos = { ok: [], warn: [], bad: [] };
+  lista.forEach(x => grupos[situacao(x.m.cumprimento).cls].push(x));
+  const linha = (cls, txt, arr) => `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span class="chip ${cls}" style="min-width:74px;text-align:center">${txt}</span>
+      <div class="barra" style="flex:1"><span style="width:${lista.length ? arr.length / lista.length * 100 : 0}%;background:var(--${cls === 'warn' ? 'warn' : cls})"></span></div>
+      <b style="min-width:24px;text-align:right">${arr.length}</b>
+    </div>`;
+  document.getElementById('resumoSituacao').innerHTML =
+    linha('ok', 'Em dia', grupos.ok) + linha('warn', 'Atenção', grupos.warn) + linha('bad', 'Crítico', grupos.bad) +
+    `<p class="sub" style="margin:10px 0 0;font-size:12.5px">Em dia: 95% ou mais do previsto · Atenção: 85% a 94% · Crítico: abaixo de 85%.</p>` +
+    (grupos.bad.length ? `<p style="margin:10px 0 0;font-size:13px"><b>Prioridade de reposição:</b> ${grupos.bad.map(x => esc(x.p.nome)).join(', ')}.</p>` : '');
+
+  // tabela
+  lista.sort((a, b) => a.m.cumprimento - b.m.cumprimento);
+  document.getElementById('tabelaProfessores').innerHTML = `
+    <thead><tr><th>Professor</th><th>Disciplina</th><th>Turma</th><th class="num">Previstas</th><th class="num">Dadas</th>
+      <th>Cumprimento</th><th class="num">Horas</th><th class="num">h/aula</th><th>Situação</th></tr></thead>
+    <tbody>${lista.map(({ p, m }) => {
+      const st = situacao(m.cumprimento);
+      return `<tr>
+        <td><b>${esc(p.nome)}</b></td><td>${esc(p.disciplina)}</td><td>${esc(p.turma)}</td>
+        <td class="num">${m.previstasAte}</td><td class="num">${m.dadas}</td>
+        <td><div style="display:flex;align-items:center;gap:8px"><div class="barra" style="flex:1"><span style="width:${Math.min(100, m.cumprimento * 100)}%;background:${st.cor}"></span></div><span style="min-width:36px;text-align:right">${fmt.pct(m.cumprimento)}</span></div></td>
+        <td class="num">${fmt.dec(m.horas)}</td><td class="num">${fmt.dec(m.mediaHoras, 2)}</td>
+        <td><span class="chip ${st.cls}">${st.txt}</span></td></tr>`;
+    }).join('')}</tbody>`;
+}
+
+function renderLancamentos() {
+  const f = document.getElementById('formLancamento');
+  const semAtual = f.semana.value || D.parametros.semanaAtual;
+  const profAtual = f.professorId.value;
+  f.semana.innerHTML = Array.from({ length: D.parametros.semanas }, (_, i) => `<option value="${i + 1}">Semana ${i + 1}</option>`).join('');
+  f.professorId.innerHTML = ativos().map(p => `<option value="${p.id}">${esc(p.nome)} — ${esc(p.disciplina)}</option>`).join('');
+  f.semana.value = semAtual;
+  if (profAtual) f.professorId.value = profAtual;
+  preencherFormLancamento();
+
+  const S = D.parametros.semanas, atual = D.parametros.semanaAtual;
+  let html = `<thead><tr><th></th>${Array.from({ length: S }, (_, i) => `<th>${i + 1}</th>`).join('')}</tr></thead><tbody>`;
+  ativos().forEach(p => {
+    html += `<tr><th class="nome">${esc(p.nome)}</th>`;
+    for (let s = 1; s <= S; s++) {
+      if (s > atual) { html += `<td class="cel futura"></td>`; continue; }
+      const l = D.lancamentos.find(x => x.professorId === p.id && x.semana === s);
+      let cls = 'vazia', txt = '–';
+      if (l) {
+        txt = l.aulasDadas;
+        cls = l.aulasDadas >= p.aulasPorSemana ? 'cheia' : l.aulasDadas === 0 ? 'zero' : 'parcial';
+      }
+      const titulo = l ? `Semana ${s}: ${l.aulasDadas} de ${p.aulasPorSemana} aulas${l.observacao ? ' — ' + l.observacao : ''}` : `Semana ${s}: sem lançamento`;
+      html += `<td class="cel ${cls}" data-prof="${p.id}" data-sem="${s}" title="${esc(titulo)}">${txt}</td>`;
+    }
+    html += '</tr>';
+  });
+  document.getElementById('mapa').innerHTML = html + '</tbody>';
+}
+
+function preencherFormLancamento() {
+  const f = document.getElementById('formLancamento');
+  const p = D.professores.find(x => x.id === f.professorId.value);
+  if (!p) return;
+  const l = D.lancamentos.find(x => x.professorId === p.id && x.semana === +f.semana.value);
+  f.aulasDadas.value = l ? l.aulasDadas : p.aulasPorSemana;
+  f.horas.value = l ? l.horas : Math.round(p.aulasPorSemana * D.parametros.horasPorAula * 10) / 10;
+  f.observacao.value = l ? l.observacao : '';
+}
+
+function renderCadastro() {
+  document.getElementById('tabelaCadastro').innerHTML = `
+    <thead><tr><th>ID</th><th>Nome</th><th>Disciplina</th><th>Turma</th><th class="num">Aulas/semana</th><th class="num">Previstas no semestre</th><th></th></tr></thead>
+    <tbody>${D.professores.map(p => `<tr>
+      <td>${esc(p.id)}</td><td><b>${esc(p.nome)}</b></td><td>${esc(p.disciplina)}</td><td>${esc(p.turma)}</td>
+      <td class="num">${p.aulasPorSemana}</td><td class="num">${p.aulasPorSemana * D.parametros.semanas}</td>
+      <td style="text-align:right"><button class="btn sec" style="padding:4px 10px" data-editar="${p.id}">Editar</button></td></tr>`).join('')}</tbody>`;
+}
+
+function renderFicha() {
+  const sel = document.getElementById('fichaProfessor');
+  const atual = sel.value;
+  sel.innerHTML = ativos().map(p => `<option value="${p.id}">${esc(p.nome)}</option>`).join('');
+  if (atual) sel.value = atual;
+  const p = D.professores.find(x => x.id === sel.value);
+  if (!p) { document.getElementById('ficha').innerHTML = '<p>Nenhum professor cadastrado.</p>'; return; }
+
+  const m = metricas(p);
+  const todos = ativos().map(x => metricas(x).cumprimento);
+  const mediaGeral = todos.reduce((a, b) => a + b, 0) / (todos.length || 1);
+  const st = situacao(m.cumprimento);
+  const hoje = new Date().toLocaleDateString('pt-BR');
+
+  // comparativo anônimo: um ponto por professor, só o próprio destacado
+  const W = 640, H = 70, x0 = 20, x1 = W - 20;
+  const minC = Math.min(0.5, ...todos), maxC = 1.05;
+  const xs = c => x0 + (x1 - x0) * (Math.min(c, maxC) - minC) / (maxC - minC);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Posição anônima do professor em relação aos colegas">`;
+  svg += `<line x1="${x0}" x2="${x1}" y1="30" y2="30" stroke="#d9d4ca" stroke-width="2"/>`;
+  [0.6, 0.7, 0.8, 0.9, 1.0].filter(t => t >= minC).forEach(t =>
+    svg += `<text x="${xs(t)}" y="62" font-size="11" text-anchor="middle" fill="#8a8f9b">${Math.round(t * 100)}%</text><line x1="${xs(t)}" x2="${xs(t)}" y1="25" y2="35" stroke="#d9d4ca"/>`);
+  todos.forEach(c => svg += `<circle cx="${xs(c)}" cy="30" r="6" fill="#c9c3b7" opacity=".9"/>`);
+  svg += `<line x1="${xs(mediaGeral)}" x2="${xs(mediaGeral)}" y1="12" y2="44" stroke="var(--ink)" stroke-dasharray="3 3"/>`;
+  svg += `<text x="${xs(mediaGeral)}" y="9" font-size="10.5" text-anchor="middle" fill="var(--ink)">média ${fmt.pct(mediaGeral)}</text>`;
+  svg += `<circle cx="${xs(m.cumprimento)}" cy="30" r="9" fill="${st.cor}" stroke="#fff" stroke-width="2"/>`;
+  svg += '</svg>';
+
+  const linhas = Array.from({ length: D.parametros.semanaAtual }, (_, i) => {
+    const l = D.lancamentos.find(x => x.professorId === p.id && x.semana === i + 1);
+    return `<tr><td>Semana ${i + 1}</td><td class="num">${p.aulasPorSemana}</td><td class="num">${l ? l.aulasDadas : '—'}</td>
+      <td class="num">${l ? fmt.dec(l.horas) : '—'}</td><td>${l ? esc(l.observacao) : 'Sem lançamento'}</td></tr>`;
+  }).join('');
+
+  document.getElementById('ficha').innerHTML = `
+    <header>
+      <div><h3>Ficha Individual Docente</h3><div style="font-size:13px;color:var(--muted)">Semestre ${esc(D.parametros.semestre)} · até a semana ${D.parametros.semanaAtual} de ${D.parametros.semanas}</div></div>
+      <div class="meta">Emitida em ${hoje}</div>
+    </header>
+    <div class="ident">
+      <div><span>Professor(a)</span><b>${esc(p.nome)}</b></div>
+      <div><span>Disciplina</span><b>${esc(p.disciplina)}</b></div>
+      <div><span>Turma</span><b>${esc(p.turma)}</b></div>
+    </div>
+    <div class="kpis">
+      ${kpi('Aulas previstas', m.previstasAte, `${m.previstasTotal} no semestre`)}
+      ${kpi('Aulas dadas', m.dadas, m.pendentes ? `${m.pendentes} a repor` : 'nenhuma pendência')}
+      ${kpi('Cumprimento', `<span style="color:${st.cor}">${fmt.pct(m.cumprimento)}</span>`, st.txt)}
+      ${kpi('Média de horas por aula', fmt.dec(m.mediaHoras, 2), `${fmt.dec(m.horas)} h no total`)}
+    </div>
+    <h4>Comparativo com o corpo docente (anônimo)</h4>
+    <div class="comparativo">${svg}
+      <p>Cada ponto cinza é um(a) colega, sem identificação. O ponto colorido é você. A linha tracejada marca a média do curso.</p>
+    </div>
+    <h4>Registro semanal</h4>
+    <table><thead><tr><th>Semana</th><th class="num">Previstas</th><th class="num">Dadas</th><th class="num">Horas</th><th>Observação</th></tr></thead><tbody>${linhas}</tbody></table>
+    <div class="assinaturas"><div>Professor(a)</div><div>Coordenação do curso</div></div>`;
+}
+
+/* ======================================================================
+   Eventos
+   ====================================================================== */
+function toast(msg, erro = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast on' + (erro ? ' erro' : '');
+  clearTimeout(t._h); t._h = setTimeout(() => t.className = 'toast', 2600);
+}
+
+function abrirAba(nome) {
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.aba === nome));
+  document.querySelectorAll('main > section').forEach(s => s.hidden = s.id !== 'aba-' + nome);
+}
+
+async function salvar(btn, fn, payload, msg) {
+  btn.disabled = true;
+  try { D = await chamar(fn, payload); renderTudo(); toast(msg); }
+  catch (e) { toast(e.message || String(e), true); }
+  finally { btn.disabled = false; }
+}
+
+document.querySelector('nav.tabs').addEventListener('click', e => { if (e.target.dataset.aba) abrirAba(e.target.dataset.aba); });
+
+document.getElementById('semanaAtual').addEventListener('change', e => salvar(e.target, 'salvarSemanaAtual', +e.target.value, 'Semana atual atualizada.'));
+
+const fL = document.getElementById('formLancamento');
+fL.semana.addEventListener('change', preencherFormLancamento);
+fL.professorId.addEventListener('change', preencherFormLancamento);
+fL.addEventListener('submit', e => {
+  e.preventDefault();
+  const dados = Object.fromEntries(new FormData(fL));
+  salvar(fL.querySelector('button'), 'salvarLancamento', dados, 'Lançamento salvo.');
+});
+
+document.getElementById('mapa').addEventListener('click', e => {
+  const c = e.target.closest('td.cel[data-prof]');
+  if (!c) return;
+  fL.semana.value = c.dataset.sem; fL.professorId.value = c.dataset.prof;
+  preencherFormLancamento();
+  fL.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  fL.aulasDadas.focus();
+});
+
+const fP = document.getElementById('formProfessor');
+fP.addEventListener('submit', e => {
+  e.preventDefault();
+  const dados = Object.fromEntries(new FormData(fP));
+  salvar(fP.querySelector('button[type=submit]'), 'salvarProfessor', dados, 'Professor salvo.').then(() => fP.reset());
+});
+document.getElementById('tabelaCadastro').addEventListener('click', e => {
+  const id = e.target.dataset.editar; if (!id) return;
+  const p = D.professores.find(x => x.id === id);
+  Object.entries(p).forEach(([k, v]) => { if (fP[k]) fP[k].value = v; });
+  fP.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+document.getElementById('fichaProfessor').addEventListener('change', renderFicha);
+
+(async function iniciar() {
+  document.getElementById('demoBanner').hidden = !DEMO;
+  try { D = await chamar('getDados'); renderTudo(); }
+  catch (e) { toast('Não foi possível carregar os dados: ' + (e.message || e), true); }
+})();
+</script>
+</body>
+</html>
