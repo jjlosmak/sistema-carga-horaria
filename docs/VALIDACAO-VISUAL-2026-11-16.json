@@ -1,0 +1,17 @@
+{
+  "originalIndexSHA256": "fa38280a73b0e68f54be14a6c0c326175c2929295327022e5a612a6f790d8e82",
+  "productionIndexSHA256": "df2cd8fb3949f50b1e9057cd558f90eb73cbc062c01a00d79419aafb0f2e115b",
+  "originalFunctions": 60,
+  "unchangedFunctionsCompared": 58,
+  "visualWrappers": [
+    "shell",
+    "render"
+  ],
+  "originalCSSPreserved": true,
+  "serverFilesUnchanged": [
+    "Code.gs",
+    "importacao.gs",
+    "Logo.html"
+  ],
+  "simulationAbsent": true
+}

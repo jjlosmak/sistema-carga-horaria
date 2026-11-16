@@ -1,32 +1,23 @@
-# Carga Horária Docente — registro da versão atual
+# Carga Horária Docente — atualização visual Unichristus
 
-Atualizado em 16/11/2026, por solicitação de Jerônimo Leite.
+## Fontes e versões
 
-## Versões separadas
+- Branch `producao`: arquivos atuais do Apps Script em `producao/`.
+- Branch `backup/pre-atualizacao-visual-2026-11-16`: quatro arquivos anteriores à atualização, preservados integralmente. Commit de backup: 95e1b98eaf763f09ba63695e118ca46a7685043f.
+- Branch `experimental/versao-anterior`: versão antiga do Git, preservada.
+- Branch `prototipo/unichristus-v02`: prévia aprovada, somente com dados fictícios e simulador.
+- `main` e a pasta raiz histórica `apps-script/` não representam a produção atual.
 
-| Referência | Conteúdo | Estado |
-|---|---|---|
-| `experimental/versao-anterior` | Versão antiga do Git, commit c0a7b175b1e1595f175a3ccc3f40cf50cd8030fe | Preservada integralmente |
-| `producao` → `producao/Index.html` | Interface atual fornecida no arquivo CARGA HORÁRIA DOCENTE.txt | Conferida com a interface lida no editor em 16/11/2026 |
-| `prototipo/unichristus-v01` → `prototipos/unichristus-v01/previa.html` | Redesign visual isolado, dados fictícios | Somente avaliação; não integrado |
+## Alteração preparada
 
-## Atenção: cópia de produção ainda parcial
+Somente `producao/Index.html` muda a aparência das telas: azul institucional, menu lateral completo/compacto, temas, formulários e painéis. O aviso visível informa: “Atualização visual: as funções, os cálculos e os layouts de impressão continuam os mesmos.”
 
-O arquivo fornecido contém apenas HTML/CSS/JavaScript da interface. Os arquivos Código.gs, importacao.gs e Logo.html do editor atual ainda precisam ser capturados e comparados para completar a base de produção.
+Código.gs (registrado como Code.gs), importacao.gs e Logo.html foram capturados do editor e permanecem idênticos. A conexão google.script.run é original. Nenhum dado fictício ou simulador foi incluído na fonte de produção. A folha de estilos original, incluindo a impressão e compactação entre 18 e 25 professores, permanece literal; os estilos novos se limitam à tela.
 
-A pasta raiz `apps-script/` foi conservada como histórico da versão antiga. **Ela não representa o backend atual e não deve ser combinada com `producao/Index.html` para uma implantação.** A main não foi promovida, mesclada nem reescrita.
+Foram comparadas as 60 funções de primeiro nível: 58 permanecem idênticas, incluindo cálculos, RPC e impressão; shell e render recebem apenas a decoração visual. As 96 verificações da prévia continuam aprovadas, e o avanço automático/data/foco foi conferido em navegador com dados fictícios.
 
-Nenhum arquivo no editor Apps Script, planilha ou implantação foi modificado. Criar esta branch registra a fonte fornecida; não publica uma aplicação e não altera o endereço existente.
+## Publicação
 
-## Interface registrada
+Fonte preparada para publicar na mesma implantação da versão 20, preservando URL, execução e público. O resultado da publicação será registrado em `docs/PUBLICACAO-VISUAL-2026-11-16.md` após confirmação no Google.
 
-- Origem: CARGA HORÁRIA DOCENTE.txt, disponibilizado pelo responsável pelo projeto.
-- Conteúdo normalizado: 77.058 caracteres, LF.
-- Comparação com a leitura anterior do editor: conteúdo coincidente pela contagem e verificação do conteúdo.
-- Não foram encontrados valores atribuídos a senha, token, secret ou API key na interface fornecida.
-- Fonte preservada sem redesign, refatoração ou alteração de funções.
-- O TXT é a cópia fornecida como versão atual pelo usuário. Não foi consultada uma versão numerada da implantação para certificar qual conteúdo está efetivamente publicado.
-
-## Continuidade
-
-Preservar todas as funções existentes e conferir mudanças remotas/editor/local antes de editar. Usar dados fictícios em testes. Importar do EduCAPES somente a linguagem visual, nunca contas, regras, permissões, dados ou integrações. O protótipo mantém cálculos ilustrativos; regras definitivas serão reconciliadas com o backend atual antes de qualquer integração.
+Backup de código não é exportação do banco. Não foram executadas importações, manutenção, testes com dados reais ou avisos aos professores. Credenciais e Propriedades do script não foram exportadas.
