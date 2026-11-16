@@ -1,0 +1,13 @@
+{
+  "passed": 96,
+  "originalFunctions": 60,
+  "unchangedFunctionsCompared": 55,
+  "printedOutputsEqual": true,
+  "printBatchSizes": [
+    17,
+    18,
+    25,
+    26
+  ],
+  "integration": "simulador somente; backend real não executado"
+}

@@ -1,0 +1,2479 @@
+<!-- IMPRESSAO COMPACTA ATE 25 PROFESSORES -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink:#172735;
+      --paper:#f5f3ee;
+      --card:#fff;
+      --soft:#faf9f6;
+      --line:#dedacf;
+      --slate:#5b6b74;
+      --gold:#1006CC;
+      --gold-dark:#0B0499;
+      --gold-soft:#ECEBFF;
+      --green:#3e7657;
+      --green-soft:#e9f3ed;
+      --red:#b5533c;
+      --red-soft:#fbecea;
+      --nav:#172735;
+      --shadow:0 10px 30px rgba(20,35,47,.07);
+    }
+
+    body[data-theme="dark"] {
+      --ink:#edf2f4;
+      --paper:#11191f;
+      --card:#1a252d;
+      --soft:#202c35;
+      --line:#34434c;
+      --slate:#b1bec5;
+      --gold-soft:#202448;
+      --green:#7fc49b;
+      --green-soft:#20372a;
+      --red:#e58b77;
+      --red-soft:#402823;
+      --nav:#0c1318;
+      --shadow:0 10px 30px rgba(0,0,0,.22);
+    }
+
+    * { box-sizing:border-box; }
+
+    body {
+      margin:0;
+      color:var(--ink);
+      background:var(--paper);
+      font-family:Inter,sans-serif;
+    }
+
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    h1,h2,h3,.number { font-family:Lora,serif; }
+
+    .wrap {
+      max-width:1180px;
+      margin:auto;
+      padding:24px 24px 70px;
+    }
+
+    .top {
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      gap:14px;
+      padding:14px 0 24px;
+      margin-bottom:22px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .system-name {
+      font-family:Lora,serif;
+      font-size:18px;
+      font-weight:600;
+    }
+
+    .system-name small {
+      display:block;
+      margin-top:5px;
+      font:12px Inter,sans-serif;
+      color:var(--slate);
+    }
+
+    .logo-area { text-align:center; }
+    .logo { max-width:210px; max-height:60px; }
+    .logo-dark { display:none; }
+    body[data-theme="dark"] .logo-light { display:none; }
+    body[data-theme="dark"] .logo-dark { display:inline-block; }
+
+    .logo-fallback {
+      font-size:17px;
+      letter-spacing:3px;
+      font-weight:600;
+    }
+
+    .logo-fallback small {
+      display:block;
+      margin-top:5px;
+      font-size:9px;
+      letter-spacing:1px;
+      color:var(--gold);
+    }
+
+    .top-actions {
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .user-email {
+      overflow:hidden;
+      text-overflow:ellipsis;
+      font-size:12px;
+      color:var(--slate);
+    }
+
+    .theme-button {
+      width:38px;
+      height:38px;
+      flex-shrink:0;
+      border:1px solid var(--line);
+      border-radius:50%;
+      color:var(--ink);
+      background:var(--card);
+    }
+
+    .fields,.actions {
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .field {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      flex:0 1 180px;
+      color:var(--slate);
+      font-size:12px;
+    }
+
+    .field.grow { flex:1 1 260px; }
+
+    input,select {
+      width:100%;
+      min-height:40px;
+      padding:9px 11px;
+      border:1px solid var(--line);
+      border-radius:6px;
+      background:var(--card);
+      color:var(--ink);
+    }
+
+    input:focus,select:focus {
+      outline:2px solid var(--gold);
+      outline-offset:1px;
+    }
+
+    input[readonly],select:disabled {
+      background:var(--soft);
+      color:var(--slate);
+    }
+
+    .button {
+      min-height:40px;
+      padding:9px 16px;
+      border:1px solid var(--gold-dark);
+      border-radius:6px;
+      background:var(--gold);
+      color:#fff;
+      font-weight:600;
+    }
+
+    .button:hover { background:var(--gold-dark); }
+    .button:disabled { opacity:.55; cursor:not-allowed; }
+
+    .button.ghost {
+      background:transparent;
+      color:var(--ink);
+      border-color:var(--line);
+    }
+
+    .button.danger {
+      color:var(--red);
+      background:var(--red-soft);
+      border-color:var(--red);
+    }
+
+    .button.small {
+      min-height:30px;
+      padding:5px 9px;
+      font-size:11px;
+    }
+
+    .nav {
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+      padding:6px;
+      margin:20px 0 28px;
+      border-radius:8px;
+      background:var(--nav);
+    }
+
+    .nav-button,.nav details summary {
+      border:0;
+      border-radius:5px;
+      padding:10px 14px;
+      background:transparent;
+      color:#ffffffc9;
+      font-size:13px;
+      cursor:pointer;
+      list-style:none;
+    }
+
+    .nav-button.active,.nav-button:hover,
+    .nav details.active summary {
+      background:#ffffff20;
+      color:#fff;
+    }
+
+    .nav details { position:relative; }
+    .nav summary::-webkit-details-marker { display:none; }
+
+    .dropdown {
+      position:absolute;
+      top:calc(100% + 8px);
+      left:0;
+      z-index:20;
+      min-width:240px;
+      padding:7px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+
+    .dropdown button {
+      display:block;
+      width:100%;
+      border:0;
+      padding:11px;
+      text-align:left;
+      background:transparent;
+      color:var(--ink);
+      border-radius:5px;
+    }
+
+    .dropdown button:hover {
+      background:var(--gold-dark);
+      color:white;
+    }
+
+    .page-title { margin:0 0 5px; font-size:20px; }
+    .sub,.hint { color:var(--slate); font-size:12px; line-height:1.6; }
+    .sub { margin:0 0 20px; }
+    .hint { margin:10px 0 14px; }
+
+    .box,.ficha {
+      padding:22px;
+      margin-bottom:26px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+
+    .flash {
+      display:none;
+      padding:11px 13px;
+      margin:12px 0;
+      border-radius:6px;
+      font-size:13px;
+    }
+
+    .flash.ok {
+      display:block;
+      background:var(--green-soft);
+      color:var(--green);
+    }
+
+    .flash.err {
+      display:block;
+      background:var(--red-soft);
+      color:var(--red);
+    }
+
+    .kpis {
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-bottom:30px;
+    }
+
+    .kpi {
+      padding:17px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:var(--card);
+    }
+
+    .kpi .label {
+      min-height:30px;
+      color:var(--slate);
+      font-size:12px;
+      margin-bottom:9px;
+    }
+
+    .number { font-size:23px; }
+    .positive { color:var(--green); }
+    .negative { color:var(--red); }
+
+    section { margin-bottom:32px; }
+    section h2 { font-size:16px; margin:0 0 14px; }
+
+    .table-wrap {
+      overflow:auto;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:var(--card);
+    }
+
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+
+    th,td {
+      padding:11px 12px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+      vertical-align:middle;
+    }
+
+    th { color:var(--slate); background:var(--soft); white-space:nowrap; }
+    tr:last-child td { border-bottom:0; }
+    .right { text-align:right; }
+    .nowrap { white-space:nowrap; }
+
+    .badge {
+      display:inline-block;
+      padding:3px 7px;
+      border-radius:12px;
+      background:var(--gold-soft);
+      font-size:11px;
+    }
+
+    .badge.red { color:var(--red); background:var(--red-soft); }
+    .badge.green { color:var(--green); background:var(--green-soft); }
+
+    .bar-row {
+      display:grid;
+      grid-template-columns:minmax(170px,260px) 1fr 85px;
+      align-items:center;
+      gap:14px;
+      border-bottom:1px solid var(--line);
+      padding:10px 0;
+      font-size:12px;
+    }
+
+    .bar-track { height:14px; background:var(--soft); border-radius:4px; }
+    .bar-fill { height:100%; border-radius:4px; background:var(--gold); }
+
+    .empty {
+      padding:24px;
+      border:1px dashed var(--line);
+      border-radius:8px;
+      color:var(--slate);
+      font-size:13px;
+    }
+
+    .hidden { display:none !important; }
+
+    .dynamic {
+      padding:16px;
+      margin:12px 0;
+      background:var(--soft);
+      border:1px solid var(--line);
+      border-radius:7px;
+    }
+
+    .calculation {
+      background:var(--gold-soft);
+      padding:12px;
+      margin:14px 0;
+      border-radius:6px;
+      font-size:13px;
+    }
+
+    .ficha-title { font-size:21px; margin:0 0 6px; }
+
+    .ficha-professor {
+      display:inline-block;
+      background:var(--gold-dark);
+      color:white;
+      padding:9px 14px;
+      border-radius:5px;
+      margin:12px 0;
+      font-weight:600;
+    }
+
+    .ficha-section {
+      margin-top:20px;
+      padding:10px 13px;
+      background:var(--nav);
+      color:white;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .ficha-row {
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      padding:11px 13px;
+      border:1px solid var(--line);
+      border-top:0;
+      font-size:13px;
+    }
+
+    .print-only { display:none; }
+
+    .print-preview {
+      padding-top:24px;
+      border-top:1px dashed var(--line);
+    }
+
+    .print-note { font-size:11px; color:var(--slate); line-height:1.5; }
+
+    .anonymous .bar-row {
+      grid-template-columns:90px 1fr 80px;
+      break-inside:avoid;
+    }
+
+    .loading { padding:90px 20px; text-align:center; color:var(--slate); }
+
+    .spinner {
+      width:28px; height:28px; margin:0 auto 16px;
+      border:3px solid var(--line);
+      border-top-color:var(--gold);
+      border-radius:50%;
+      animation:spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    dialog {
+      width:min(560px,94vw);
+      max-height:90vh;
+      overflow:auto;
+      padding:24px;
+      color:var(--ink);
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:10px;
+      box-shadow:var(--shadow);
+    }
+
+    dialog::backdrop { background:#0009; }
+    dialog h2 { margin-top:0; font-size:19px; }
+
+    @media(max-width:760px) {
+      .wrap { padding:15px 14px 50px; }
+      .system-name,.user-email { display:none; }
+      .top { grid-template-columns:1fr auto 1fr; }
+      .logo-area { grid-column:2; }
+      .top-actions { grid-column:3; }
+      .logo-fallback { font-size:14px; letter-spacing:1px; }
+      .logo { max-width:165px; }
+      .kpis { grid-template-columns:repeat(2,1fr); }
+      .bar-row { grid-template-columns:135px 1fr 70px; }
+    }
+
+    @media(max-width:480px) {
+      .field { flex:1 1 100%; }
+      .kpis { grid-template-columns:1fr; }
+      .nav { gap:2px; }
+      .nav-button,.nav details summary { padding:9px; font-size:12px; }
+      .dropdown { left:auto; right:0; }
+      .bar-row { grid-template-columns:1fr 65px; }
+      .bar-row .bar-track { grid-column:1 / -1; grid-row:2; }
+      .anonymous .bar-row { grid-template-columns:70px 1fr 70px; }
+      .anonymous .bar-track { grid-column:auto; grid-row:auto; }
+    }
+
+    /* Fichas de 18 a 25 professores: compacta��o tamb�m na pr�via. */
+    .ficha-print.ficha-compact { padding:8px; }
+    .ficha-compact .ficha-title { font-size:18px; line-height:1.2; margin:0 0 4px; }
+    .ficha-compact .print-note { font-size:10px; line-height:1.25; margin:6px 0; }
+    .ficha-compact .ficha-professor { font-size:13px; line-height:1.25; padding:6px 10px; margin:7px 0; }
+    .ficha-compact .ficha-section { font-size:11px; line-height:1.25; padding:6px 10px; margin-top:10px; }
+    .ficha-compact .ficha-row { font-size:11px; line-height:1.25; padding:6px 10px; }
+    .ficha-compact .anonymous .bar-row { font-size:10px; line-height:1.2; padding:4px 0; gap:10px; }
+    .ficha-compact .bar-track,.ficha-compact .bar-fill { height:10px; }
+    .ficha-compact .badge { font-size:9px; line-height:1.1; padding:2px 5px; }
+    @page ficha-documento { size:A4 portrait; margin:12mm; }
+
+    @media print {
+      body,body[data-theme="dark"] {
+        --ink:#172735;
+        --paper:#fff;
+        --card:#fff;
+        --soft:#edeae1;
+        --line:#dedacf;
+        --slate:#5b6b74;
+        --gold:#b8863b;
+        --gold-dark:#8c6527;
+        --gold-soft:#f6ecdb;
+        --nav:#172735;
+        color:#172735;
+        background:white;
+      }
+
+      .no-print,.screen-ficha,.print-preview,dialog {
+        display:none !important;
+      }
+
+      .print-only { display:block !important; }
+      .report-print table { width:100%; border-collapse:collapse; font-size:11px; }
+      .report-print th,.report-print td { border:1px solid #aaa; padding:6px; text-align:left; }
+      .report-print thead { display:table-header-group; }
+      .report-print tr { break-inside:avoid; }
+      .wrap { max-width:none; padding:0; }
+      .ficha { border:0; box-shadow:none; padding:12px; }
+      .ficha-row,.bar-row { break-inside:avoid; }
+      .ficha-batch-item { page:ficha-documento; }
+      .ficha-print.ficha-compact { break-inside:avoid; page-break-inside:avoid; padding:8px; }
+      .ficha-batch-item + .ficha-batch-item { break-before:page; page-break-before:always; }
+
+      .anonymous .bar-row {
+        grid-template-columns:90px 1fr 80px;
+      }
+
+      .anonymous .bar-track {
+        grid-column:auto;
+        grid-row:auto;
+      }
+
+      .ficha-section,.ficha-professor,.bar-fill,.badge {
+        print-color-adjust:exact;
+        -webkit-print-color-adjust:exact;
+      }
+    }
+    .university-logo {
+  width: clamp(160px, 25vw, 280px);
+  margin: 0 auto;
+  color: #1006CC;
+}
+
+.university-logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.university-logo svg path {
+  fill: currentColor !important;
+}
+
+body[data-theme="dark"] .university-logo {
+  color: #FFFFFF;
+}
+  </style>
+<title>Carga Hor�ria Docente � Pr�via V02</title><style id="redesign-screen">
+/* Todas as mudan�as visuais ficam restritas � tela. A impress�o usa o CSS original. */
+@media screen {
+ :root{--ink:#14233d;--paper:#f5f7fc;--card:#fff;--soft:#eef4ff;--line:#e1e8f3;--slate:#657b9a;--gold:#135fea;--gold-dark:#123f9c;--gold-soft:#eaf1ff;--green:#11865d;--green-soft:#e8f8f1;--red:#bc4257;--red-soft:#fff0f3;--nav:#061b43;--shadow:0 12px 32px rgba(13,43,97,.055)}
+ body[data-theme="dark"]{--ink:#e9f1ff;--paper:#0b1428;--card:#121f36;--soft:#1d3760;--line:#283953;--slate:#a5b7d2;--gold:#82b2ff;--gold-dark:#135fea;--gold-soft:#1d3760;--green:#a4f4d4;--green-soft:#153d35;--red:#ffc1c9;--red-soft:#4b2734;--nav:#061b43;--shadow:0 12px 32px #0000001b}
+ body{font:14px/1.5 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{transition:background .18s,transform .18s,box-shadow .18s}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #6ca6ff;outline-offset:3px}h1,h2,h3,.number{font-family:inherit}h1,h2,h3{letter-spacing:-.5px}.wrap{max-width:1700px;margin-left:252px;margin-right:auto;padding:0 36px 55px;min-height:100vh;transition:margin-left .25s}.top{display:flex;min-height:81px;margin:0 -36px 22px;padding:14px 36px;background:var(--card);gap:15px}.system-name{font-family:inherit;font-weight:750;font-size:16px;flex:1}.system-name small{font-size:10px;font-weight:400;margin-top:3px}.logo-area{display:none}.top-actions{margin-left:auto}.user-email{font-size:11px}.theme-button{border-radius:11px;color:var(--slate);width:36px;height:36px}.theme-button:hover{background:var(--soft);color:var(--gold)}.demo-mobile{display:none}.demo-collapse{font-size:15px}
+ .nav{display:flex;flex-direction:column;flex-wrap:nowrap;gap:5px;position:fixed;top:0;left:0;bottom:0;width:252px;margin:0;padding:25px 14px 30px;border-radius:0;background:linear-gradient(165deg,#092c75,#071b46 67%,#071739);color:white;z-index:20;overflow:auto;scrollbar-width:thin;box-shadow:8px 0 30px #04163a12;transition:width .25s,transform .25s}
+ .demo-brand{display:flex;align-items:center;gap:11px;padding:0 10px 25px;border-bottom:1px solid #ffffff18;margin-bottom:22px;white-space:nowrap}.demo-brand b{display:block;font-size:19px;letter-spacing:-.7px}.demo-brand small{font-size:9px;letter-spacing:1.5px;color:#adc5ea}.demo-crest{display:grid;place-items:center;width:38px;height:44px;flex:none;background:linear-gradient(135deg,#1b83ff,#84c4ff);border-radius:12px 12px 18px 18px;box-shadow:0 8px 23px #1670f244;font-size:20px;font-weight:850}
+ .demo-navlabel,.nav summary{font-size:10px!important;font-weight:750!important;color:#95b1dd!important;letter-spacing:1.4px;padding:0 13px!important;margin:0 0 12px!important;background:none!important}.nav summary{margin:22px 0 10px!important;cursor:default}.nav details{position:static}.nav-button,.dropdown button{display:flex;align-items:center;gap:11px;border:0;width:100%;padding:12px 13px;border-radius:10px;color:#c0d1ec;background:none;text-align:left;font-size:12px;font-weight:600;white-space:nowrap;min-height:43px}.nav-button:before,.dropdown button:before{content:attr(data-icon);font-size:19px;width:20px;height:20px;line-height:20px;text-align:center;flex:none}.nav-button:hover,.dropdown button:hover{background:#ffffff13;color:#fff}.nav-button.active,.dropdown button.active{background:linear-gradient(90deg,#2878e9,#1960ca);color:#fff;box-shadow:0 6px 20px #0056c538}.dropdown{position:static;top:auto;min-width:0;border:0;border-radius:0;background:none;box-shadow:none;padding:0;display:grid;gap:5px}
+ .demo-banner{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--gold-soft);border:1px solid #78a4e43d;border-radius:11px;padding:11px 14px;color:var(--gold);font-size:11px;margin-bottom:22px}.demo-banner b{font-size:10px;letter-spacing:.6px}.demo-banner span{flex:1;min-width:160px}.demo-banner button{border:0;background:none;font-size:11px;color:var(--gold);font-weight:700;cursor:pointer}.wrap>.fields{justify-content:flex-end;margin-bottom:24px;gap:12px}.wrap>.fields .field{flex:0 1 150px;font-size:10px;font-weight:650}.demo-hero{position:relative;background:linear-gradient(104deg,#082762,#0f4aaa 68%,#176ce2);border-radius:20px;padding:26px 30px;color:white;margin-bottom:24px;overflow:hidden;box-shadow:0 12px 30px #153e9420}.demo-hero:after{content:"";position:absolute;right:-30px;top:-160px;width:350px;height:350px;border:1px solid #ffffff2b;border-radius:50%;box-shadow:0 0 0 38px #ffffff09,0 0 0 82px #ffffff08,0 0 0 137px #ffffff05;pointer-events:none}.demo-hero small{font-size:10px;letter-spacing:1.3px;color:#bad6ff;font-weight:750}.demo-hero h2{font-size:23px;margin:8px 0 5px;position:relative;z-index:1}.demo-hero p{font-size:12px;color:#d3e3f9;margin:0}.page-title{font-size:28px;letter-spacing:-1px;margin:0 0 8px}.sub{font-size:12px;margin-bottom:24px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin:22px 0 29px}.kpi{position:relative;border-radius:17px;padding:20px;box-shadow:var(--shadow);overflow:hidden;background:linear-gradient(155deg,var(--card),var(--paper));transition:transform .2s}.kpi:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#2860b5,#3e91f8 65%,#a6d8ff)}.kpi:hover{transform:translateY(-3px)}.kpi .label{font-size:11px;line-height:1.45;min-height:33px;max-width:160px}.kpi .number{font-size:28px;line-height:1.2;font-weight:800;letter-spacing:-.6px}.box,.ficha{border-radius:18px;padding:24px;box-shadow:var(--shadow)}section:not(.box){background:var(--card);border:1px solid var(--line);border-radius:18px;padding:23px;box-shadow:var(--shadow)}section h2,.box h2{font-size:16px;margin-bottom:18px}.table-wrap{border-radius:13px}table{font-size:12px}th{font-size:10px;letter-spacing:.04em}th,td{padding:13px 14px}tr:hover td{background:var(--soft)}.button{border-radius:11px;padding:10px 16px;border-color:#135fea;background:#135fea;color:white;font-size:12px;font-weight:650;box-shadow:0 5px 15px #1763e718}.button:hover{transform:translateY(-1px);background:#124ec0}.button.ghost{background:var(--card);box-shadow:none}.button.ghost:hover{background:var(--soft)}.button.small{border-radius:8px;font-size:11px;box-shadow:none}.actions{gap:9px}.fields{gap:16px}.field{font-size:11px;gap:7px}.field.grow{flex-basis:250px}input,select{border-radius:10px;min-height:42px;padding:10px 12px;font-size:12px}.dynamic,.calculation{border-radius:12px;padding:16px}.badge{border-radius:99px;padding:5px 9px;font-size:10px;font-weight:700}.bar-track{height:10px;background:var(--gold-soft);border-radius:20px}.bar-fill{border-radius:20px;background:linear-gradient(90deg,#20478b,#6ea9ff)}.flash{border-radius:11px;line-height:1.5}.flash.ok{border:1px solid #3eac7930}.empty{border-radius:12px}
+ dialog{position:fixed;inset:0 0 0 auto;margin:0;width:min(560px,100vw);height:100dvh;max-height:100dvh;max-width:100vw;border:0;border-left:1px solid var(--line);border-radius:0;padding:29px;box-shadow:-16px 0 50px #0515342c}dialog[open]{animation:demoSlide .25s ease-out}dialog::backdrop{background:#07193380;backdrop-filter:blur(5px)}dialog h2{font-size:24px;letter-spacing:-.7px;margin-bottom:18px}.ficha-title{font-size:21px}.ficha-section{background:var(--nav);border-radius:10px 10px 0 0}.ficha-professor{border-radius:9px;background:#123f9c}.print-preview .ficha{border-radius:8px}.demo-compact .wrap{margin-left:78px}.demo-compact .nav{width:78px;padding-left:9px;padding-right:9px}.demo-compact .demo-brand{padding-left:10px;padding-right:0}.demo-compact .demo-brand div,.demo-compact .demo-navlabel,.demo-compact .nav summary{display:none}.demo-compact .nav-button,.demo-compact .dropdown button{font-size:0;gap:0;justify-content:center;padding:12px 6px}.demo-compact .nav-button:before,.demo-compact .dropdown button:before{font-size:20px}.demo-compact .nav details{margin-top:17px}
+ .wrap>.page-title,.wrap>.kpis,.wrap>section,.wrap>#launch-form{animation:demoEnter .3s both}@keyframes demoEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes demoSlide{from{opacity:.5;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+ @media(max-width:1180px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:0 25px 45px}.top{margin-left:-25px;margin-right:-25px;padding-left:25px;padding-right:25px}.user-email{display:none}.field.grow{flex-basis:230px}}
+ @media(max-width:700px){.wrap,.demo-compact .wrap{margin-left:0;padding:0 16px 40px}.top{margin:0 -16px 18px;padding:12px 16px;min-height:65px;gap:9px}.system-name{display:block;font-size:14px}.system-name small{font-size:9px}.top-actions{gap:7px}.demo-mobile{display:block;flex:none}.demo-collapse{display:none}.nav,.demo-compact .nav{width:252px;visibility:hidden;transform:translateX(-100%);padding:25px 14px}.demo-menu-open .nav{visibility:visible;transform:translateX(0);box-shadow:0 0 0 100vw #07193380}.demo-menu-open .demo-mobile{position:relative;z-index:21}.demo-compact .demo-brand div,.demo-compact .demo-navlabel,.demo-compact .nav summary{display:block}.demo-compact .nav-button,.demo-compact .dropdown button{font-size:12px;justify-content:start;gap:11px;padding:12px 13px}.demo-compact .demo-brand{padding:0 10px 25px}.demo-compact .nav details{margin-top:0}.demo-banner{align-items:start;padding:11px 12px}.demo-banner span{flex-basis:100%}.wrap>.fields{justify-content:stretch}.wrap>.fields .field{flex:1;min-width:0}.page-title{font-size:25px}.demo-hero{padding:22px}.demo-hero h2{font-size:20px}.demo-hero:after{display:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kpi{padding:17px}.kpi .number{font-size:25px}.kpi .label{font-size:10px}.box,.ficha,section:not(.box){padding:18px;border-radius:16px}.fields .field,.fields .field.grow{flex:1 1 100%}.wrap>.fields .field{flex:1 1 40%}dialog{inset:auto 0 0;height:92dvh;max-height:92dvh;width:100%;border-radius:23px 23px 0 0;border-top:1px solid var(--line);border-left:0;padding:23px}.bar-row{grid-template-columns:1fr 65px}.bar-row .bar-track{grid-row:2;grid-column:1/-1}.anonymous .bar-row{grid-template-columns:70px 1fr 70px}.anonymous .bar-track{grid-column:auto;grid-row:auto}}
+ @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+}
+
+</style></head>
+
+<body>
+  <div id="app">
+    <div class="loading"><div class="spinner"></div>Carregando.</div>
+  </div>
+
+  <dialog id="professor-dialog"></dialog>
+  <dialog id="remove-dialog"></dialog>
+  <dialog id="edit-dialog"></dialog>
+
+  <script>
+    // Espa�o reservado para as logos oficiais.
+    const LOGO_LIGHT = '';
+    const LOGO_DARK = '';
+
+    const TIMES = {
+      'Manh�': { start:'08:00', end:'11:00' },
+      'Tarde': { start:'14:00', end:'17:00' },
+      'Noite': { start:'19:00', end:'22:00' }
+    };
+
+    const state = {
+      info:null,
+      professors:[],
+      records:[],
+      reasons:[],
+      coordinators:[],
+      view:'painel',
+      semester:null,
+      turno:null,
+      titularId:null,
+      launchDate:"",
+      reportMode:"semana",
+      reportDate:(() => { const d = new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); })(),
+      fichaId:null,
+      fichaPrintMode:"atual",
+      fichaPrintIds:[],
+      fichaPrintContext:null,
+      showPrintPreview:false,
+      toast:null
+    };
+
+    const $ = id => document.getElementById(id);
+
+    function esc(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#039;');
+    }
+
+    // Arredonda apenas a apresenta��o, usando as horas originais.
+    function fmt(value) {
+      const hoursValue = Number(value || 0);
+      if (!Number.isFinite(hoursValue)) return '-';
+      const minutes = Math.round(Math.abs(hoursValue) * 60);
+      const sign = hoursValue < 0 && minutes > 0 ? '-' : '';
+      return sign + Math.floor(minutes / 60) + 'h' +
+        String(minutes % 60).padStart(2,'0') + 'min';
+    }
+
+    function sum(rows,key) {
+      return rows.reduce((total,row) => total + Number(row[key] || 0),0);
+    }
+
+    function hours(start,end) {
+      if (!start || !end) return 0;
+
+      const minutes = value => {
+        const parts = value.split(':').map(Number);
+        return parts[0] * 60 + parts[1];
+      };
+
+      return Math.max(0,minutes(end)-minutes(start))/60;
+    }
+
+    function dateLabel(value) {
+      const parts = String(value || '').split('-');
+
+      return parts.length === 3
+        ? parts[2]+'/'+parts[1]+'/'+parts[0]
+        : '-';
+    }
+
+    function professor(id) {
+      return state.professors.find(p => p.id === id) || null;
+    }
+
+    function isActive(p) {
+      return p && p.active !== false;
+    }
+
+    function historyName(id) {
+      const p = professor(id);
+
+      if (!p) return '(cadastro n�o encontrado)';
+
+      return p.name + (
+        !isActive(p)
+          ? ' ('+(p.departureReason || 'Desligado')+')'
+          : ''
+      );
+    }
+
+    function linked(id) {
+      return state.records.some(r =>
+        r.responsibleId === id ||
+        r.titularId === id ||
+        r.substituteId === id
+      );
+    }
+
+    function semesters() {
+      return [...new Set(state.professors.map(p => p.semester).filter(Boolean))]
+        .sort((a,b) =>
+          (parseInt(a,10)||0)-(parseInt(b,10)||0) ||
+          a.localeCompare(b)
+        );
+    }
+
+    function turns() {
+      const available = state.professors
+        .filter(p => p.semester === state.semester)
+        .map(p => p.turno);
+
+      return Object.keys(TIMES).filter(t => available.includes(t));
+    }
+
+    function ensureContext() {
+      const sems = semesters();
+
+      if (!sems.includes(state.semester)) {
+        state.semester = sems.length ? sems[sems.length-1] : null;
+      }
+
+      const available = turns();
+
+      if (!available.includes(state.turno)) {
+        state.turno = available[0] || null;
+      }
+    }
+
+    function contextProfessors(type,onlyActive) {
+      return state.professors.filter(p =>
+        p.semester === state.semester &&
+        p.turno === state.turno &&
+        (!type || p.type === type) &&
+        (!onlyActive || isActive(p))
+      );
+    }
+
+    function contextRecords() {
+      // Inclui desligados para n�o perder os totais hist�ricos.
+      const ids = new Set(
+        contextProfessors('Titular',false).map(p => p.id)
+      );
+
+      return state.records.filter(r => ids.has(r.titularId));
+    }
+
+    function applyData(data) {
+      state.professors = data.professors || [];
+      state.records = data.records || [];
+      state.reasons = data.reasons || [];
+      state.coordinators = data.coordinators || state.coordinators || [];
+      ensureContext();
+    }
+
+    function flash(id,type,message) {
+      if (!$(id)) return;
+      $(id).className = 'flash no-print '+type;
+      $(id).textContent = message;
+    }
+
+    function rpc(name,args) {
+      return new Promise((resolve,reject) => {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(reject)[name](...(args || []));
+      });
+    }
+
+    function errorMessage(error) {
+      return error && error.message
+        ? error.message
+        : 'N�o foi poss�vel concluir a opera��o.';
+    }
+
+    function notify(message) {
+      state.toast = message;
+      render();
+    }
+
+    function setTheme(theme) {
+      document.body.dataset.theme = theme;
+
+      try {
+        localStorage.setItem('carga-horaria-theme',theme);
+      } catch (e) {}
+
+      if ($('theme')) {
+        $('theme').textContent = theme === 'dark' ? '?' : '?';
+      }
+    }
+
+    function initialTheme() {
+      try {
+        const saved = localStorage.getItem('carga-horaria-theme');
+        if (saved === 'light' || saved === 'dark') return saved;
+      } catch (e) {}
+
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+
+    function logoHtml() {
+    const svg = '<strong>Unichristus</strong>';
+
+      return '<div class="university-logo">' + svg + '</div>';
+    }
+
+    function option(value,label,selected) {
+      return `<option value="${esc(value)}"
+        ${value === selected ? 'selected' : ''}>${esc(label)}</option>`;
+    }
+
+    function shell(content) {
+      const registrations = ['titulares','substitutos','motivos','coordenadores'];
+
+      return `<div class="wrap">
+        <header class="top no-print">
+          <div class="system-name">
+            Carga Hor�ria<small>Painel da coordena��o</small>
+          </div>
+
+          <div class="logo-area">${logoHtml()}</div>
+
+          <div class="top-actions">
+            <span class="user-email">${esc(state.info.email)}</span>
+            <button class="theme-button" id="theme"
+              title="Alternar tema" aria-label="Alternar tema">
+              ${document.body.dataset.theme === 'dark' ? '?' : '?'}
+            </button>
+          </div>
+        </header>
+
+        <div class="fields no-print">
+          <label class="field">Semestre
+            <select id="semester">
+              ${semesters().map(s => option(s,s,state.semester)).join('')}
+            </select>
+          </label>
+
+          <label class="field">Turno
+            <select id="turno">
+              ${turns().map(t => option(t,t,state.turno)).join('')}
+            </select>
+          </label>
+        </div>
+
+        <nav class="nav no-print">
+          ${[
+            ['painel','Painel'],
+            ['lancar','Lan�ar horas'],
+            ['relatorios','Relat�rios'],
+            ['ficha','Ficha individual']
+          ].map(([id,label]) => `
+            <button data-view="${id}"
+              class="nav-button ${state.view === id ? 'active' : ''}">
+              ${label}
+            </button>`).join('')}
+
+          <details class="${registrations.includes(state.view) ? 'active' : ''}">
+            <summary>Cadastros ?</summary>
+            <div class="dropdown">
+              <button data-view="titulares">Professores titulares</button>
+              <button data-view="substitutos">Professores substitutos</button>
+              <button data-view="motivos">Motivos de aus�ncia</button>
+              <button data-view="coordenadores">Coordenadores</button>
+            </div>
+          </details>
+        </nav>
+
+        <div class="flash no-print" id="global-flash"></div>
+        ${content}
+      </div>`;
+    }
+
+    function render() {
+      ensureContext();
+
+      const views = {
+        painel:painelHtml,
+        lancar:lancarHtml,
+        relatorios:relatoriosHtml,
+        ficha:fichaHtml,
+        titulares:() => cadastroHtml('Titular'),
+        substitutos:() => cadastroHtml('Substituto'),
+        motivos:motivosHtml,
+        coordenadores:coordenadoresHtml
+      };
+
+      $('app').innerHTML = shell(views[state.view]());
+
+      document.querySelectorAll('[data-view]').forEach(button => {
+        button.onclick = () => {
+          state.view = button.dataset.view;
+          render();
+        };
+      });
+
+      $('semester').onchange = event => {
+        state.semester = event.target.value;
+        state.turno = null;
+        state.titularId = null;
+        state.fichaId = null;
+        state.showPrintPreview = false;
+        render();
+      };
+
+      $('turno').onchange = event => {
+        state.turno = event.target.value;
+        state.titularId = null;
+        state.fichaId = null;
+        state.showPrintPreview = false;
+        render();
+      };
+
+      $('theme').onclick = () => setTheme(
+        document.body.dataset.theme === 'dark' ? 'light' : 'dark'
+      );
+
+      if (state.view === 'lancar') attachLancar();
+      if (state.view === 'ficha') attachFicha();
+      if (state.view === 'relatorios') attachRelatorios();
+      if (state.view === 'motivos') attachMotivos();
+      if (state.view === 'coordenadores') attachCoordenadores();
+
+      if (state.view === 'titulares' || state.view === 'substitutos') {
+        attachCadastro();
+      }
+
+      if (state.toast) {
+        flash('global-flash','ok',state.toast);
+        state.toast = null;
+      }
+    }
+
+    function titularStats() {
+      const records = contextRecords();
+
+      return contextProfessors('Titular',false).map(p => {
+        const direct = records.filter(r =>
+          r.titularId === p.id && !r.absent
+        );
+
+        const absences = records.filter(r =>
+          r.titularId === p.id && r.absent
+        ).length;
+
+        const total = sum(direct,'hours');
+        const planned = sum(direct,'plannedHours');
+
+        return {
+          id:p.id,
+          name:historyName(p.id),
+          classes:direct.length,
+          absences:absences,
+          hours:total,
+          planned:planned,
+          saldo:total-planned,
+          average:direct.length ? total/direct.length : 0
+        };
+      });
+    }
+
+    function ranking() {
+      return titularStats().sort((a,b) =>
+        b.average-a.average ||
+        b.hours-a.hours ||
+        a.name.localeCompare(b.name)
+      );
+    }
+
+    function substituteStats() {
+      const map = {};
+
+      contextRecords().filter(r => r.absent && r.substituteId)
+        .forEach(r => {
+          if (!map[r.substituteId]) {
+            map[r.substituteId] = {
+              id:r.substituteId,
+              name:historyName(r.substituteId),
+              count:0,
+              hours:0
+            };
+          }
+
+          map[r.substituteId].count++;
+          map[r.substituteId].hours += r.hours;
+        });
+
+      return Object.values(map).sort((a,b) =>
+        b.hours-a.hours || a.name.localeCompare(b.name)
+      );
+    }
+
+    function table(headers,rows) {
+      return `<div class="table-wrap"><table>
+        <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+        <tbody>${rows || `<tr><td colspan="${headers.length}">
+          Nenhum registro encontrado.
+        </td></tr>`}</tbody>
+      </table></div>`;
+    }
+
+    function substituteTable() {
+      return table(
+        ['Professor substituto','Substitui��es','Horas dadas'],
+        substituteStats().map(p => `<tr>
+          <td>${esc(p.name)}</td>
+          <td>${p.count}</td>
+          <td>${fmt(p.hours)}</td>
+        </tr>`).join('')
+      );
+    }
+
+    function kpi(label,value) {
+      return `<div class="kpi">
+        <div class="label">${label}</div>
+        <div class="number">${value}</div>
+      </div>`;
+    }
+
+    function painelHtml() {
+      const records = contextRecords();
+      const titulars = contextProfessors('Titular',false);
+      const plannedClasses = sum(titulars,'plannedClasses');
+      const titularHours = sum(records.filter(r => !r.absent),'hours');
+      const substituteHours = sum(records.filter(r => r.absent),'hours');
+      const total = titularHours+substituteHours;
+      const planned = sum(records,'plannedHours');
+      const saldo = total-planned;
+      const stats = titularStats().sort((a,b) => b.hours-a.hours);
+      const max = Math.max(...stats.map(p => p.hours),0.1);
+
+      return `<h1 class="page-title">Painel geral</h1>
+        <p class="sub">
+          ${esc(state.semester || '-')} � ${esc(state.turno || '-')}.
+          Os registros dos professores desligados continuam nos totais hist�ricos.
+        </p>
+
+        <div class="kpis">
+          ${kpi('Aulas previstas no semestre',plannedClasses)}
+          ${kpi('Aulas realizadas',records.length)}
+          ${kpi('Progresso do semestre',
+            (plannedClasses ? Math.round(records.length/plannedClasses*100) : 0)+'%')}
+          ${kpi('Horas dadas por titulares',fmt(titularHours))}
+          ${kpi('Horas dadas por substitutos',fmt(substituteHours))}
+          ${kpi('Total geral de horas',fmt(total))}
+          ${kpi('Horas previstas das aulas realizadas',fmt(planned))}
+          ${kpi('Saldo geral',
+            `<span class="${saldo >= 0 ? 'positive' : 'negative'}">
+              ${saldo >= 0 ? '+' : ''}${fmt(saldo)}
+            </span>`)}
+        </div>
+
+        <section>
+          <h2>Horas dos professores titulares</h2>
+          ${stats.length ? stats.map(p => `<div class="bar-row">
+            <div>${esc(p.name)}</div>
+            <div class="bar-track"><div class="bar-fill"
+              style="width:${p.hours/max*100}%"></div></div>
+            <div class="right">${fmt(p.hours)}</div>
+          </div>`).join('') : '<div class="empty">Nenhum titular cadastrado.</div>'}
+        </section>
+
+        <section>
+          <h2>Professores substitutos</h2>
+          ${substituteTable()}
+        </section>`;
+    }
+
+    function launchProfessors(type) {
+      const name = p => p.name.replace(/^dra?\.?\s*/i,'').trim();
+      return contextProfessors(type,true).slice().sort((a,b) =>
+        name(a).localeCompare(name(b),'pt-BR',{sensitivity:'base'}) || a.id.localeCompare(b.id));
+    }
+
+    function lancarHtml() {
+      const titulars = launchProfessors('Titular');
+      const substitutes = launchProfessors('Substituto');
+
+      if (!titulars.some(p => p.id === state.titularId)) {
+        state.titularId = titulars.length ? titulars[0].id : null;
+      }
+
+      if (!titulars.length) {
+        return `<h1 class="page-title">Lan�ar horas</h1>
+          <div class="empty">
+            Nenhum titular ativo neste semestre e turno.
+          </div>`;
+      }
+
+      const p = professor(state.titularId);
+
+      return `<h1 class="page-title">Lan�ar horas</h1>
+        <p class="sub">
+          Em caso de falta, as horas ser�o atribu�das ao substituto.
+          Professores desligados n�o aparecem nas sele��es.
+        </p>
+
+        <form id="launch-form" class="box">
+          <div class="fields">
+            <label class="field grow">Pesquisar professor pelo nome
+              <input type="search" id="launch-search" placeholder="Digite parte do nome" autocomplete="off">
+            </label>
+          </div>
+          <div class="fields">
+            <label class="field grow">Professor titular
+              <select id="launch-titular" required>
+                ${titulars.map(p => option(p.id,p.name,state.titularId)).join('')}
+              </select>
+            </label>
+
+            <label class="field">Data da aula
+              <input type="date" id="launch-date" value="${esc(state.launchDate)}" required>
+            </label>
+
+            <label class="field">Situa��o
+              <select id="launch-absent">
+                <option value="N�o">Presente</option>
+                <option value="Sim">Faltou</option>
+                <option value="Reuni�o">Reuni�o dos tutores</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="hint hidden" id="meeting-hint">
+            Dia de reuni�o dos tutores: lance o hor�rio normalmente.
+            Isso s� deixa o dia marcado no relat�rio.
+          </p>
+
+          <div class="fields">
+            <label class="field">In�cio previsto
+              <input type="time" id="planned-start"
+                value="${esc(p.defaultStart)}" readonly>
+            </label>
+
+            <label class="field">Fim previsto
+              <input type="time" id="planned-end"
+                value="${esc(p.defaultEnd)}" readonly>
+            </label>
+          </div>
+
+          <div class="dynamic hidden" id="substitution-fields">
+            <div class="fields">
+              <label class="field grow">Professor substituto
+                <select id="launch-substitute">
+                  <option value="">Selecione</option>
+                  ${substitutes.map(p => option(p.id,p.name,'')).join('')}
+                </select>
+              </label>
+
+              <label class="field grow">Motivo da aus�ncia
+                <select id="launch-reason">
+                  <option value="">Selecione</option>
+                  ${state.reasons
+                    .filter(r => r.active && r.reason.toLowerCase() !== 'outro')
+                    .map(r => option(r.reason,r.reason,'')).join('')}
+                  <option value="__outro__">Outro</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field grow hidden" id="other-field">
+              Especifique o motivo
+              <input id="other-reason" maxlength="150">
+            </label>
+
+            ${substitutes.length ? '' : `<p class="negative">
+              Cadastre um substituto ativo neste semestre e turno.
+            </p>`}
+          </div>
+
+          <div class="fields">
+            <label class="field">
+              <span id="real-start-label">In�cio real do titular</span>
+              <input type="time" id="real-start" required>
+            </label>
+
+            <label class="field">
+              <span id="real-end-label">Fim real do titular</span>
+              <input type="time" id="real-end" required>
+            </label>
+          </div>
+
+          <div class="calculation" id="calculation">
+            Preencha os hor�rios reais para ver o c�lculo.
+          </div>
+
+          <button class="button" id="launch-save">Adicionar lan�amento</button>
+          <div class="flash" id="launch-flash"></div>
+        </form>`;
+    }
+
+    function attachLancar() {
+      if (!$('launch-form')) return;
+
+      function preview() {
+        const real = hours($('real-start').value,$('real-end').value);
+        const planned = hours($('planned-start').value,$('planned-end').value);
+        const who = $('launch-absent').value === 'Sim' ? 'substituto' : 'titular';
+
+        if (!$('real-start').value || !$('real-end').value) {
+          $('calculation').textContent = 'Preencha os hor�rios reais para ver o c�lculo.';
+        } else if (!real) {
+          $('calculation').textContent = 'O fim real precisa ser depois do in�cio.';
+        } else {
+          $('calculation').textContent =
+            'Previsto: '+fmt(planned)+' � Horas do '+who+': '+
+            fmt(real)+' � Saldo: '+fmt(real-planned);
+        }
+      }
+
+      let lastAbsent = false;
+
+      function absenceChanged(clear) {
+        const absent = $('launch-absent').value === 'Sim';
+        lastAbsent = absent;
+
+        $('meeting-hint').classList.toggle('hidden',$('launch-absent').value !== 'Reuni�o');
+        $('substitution-fields').classList.toggle('hidden',!absent);
+        $('launch-substitute').required = absent;
+        $('launch-substitute').disabled = !absent;
+        $('launch-reason').required = absent;
+        $('launch-reason').disabled = !absent;
+
+        $('real-start-label').textContent =
+          'In�cio real do '+(absent ? 'substituto' : 'titular');
+
+        $('real-end-label').textContent =
+          'Fim real do '+(absent ? 'substituto' : 'titular');
+
+        if (clear) {
+          // Evita atribuir ao titular hor�rios digitados para o substituto.
+          $('real-start').value = '';
+          $('real-end').value = '';
+          $('launch-substitute').value = '';
+          $('launch-reason').value = '';
+          $('other-reason').value = '';
+        }
+
+        reasonChanged();
+        preview();
+      }
+
+      function reasonChanged() {
+        const other = $('launch-absent').value === 'Sim' &&
+          $('launch-reason').value === '__outro__';
+
+        $('other-field').classList.toggle('hidden',!other);
+        $('other-reason').required = other;
+        $('other-reason').disabled = !other;
+
+        if (!other) $('other-reason').value = '';
+      }
+
+      $('launch-titular').onchange = event => {
+        state.titularId = event.target.value;
+        const p = professor(state.titularId);
+        $('planned-start').value = p ? p.defaultStart : '';
+        $('planned-end').value = p ? p.defaultEnd : '';
+        preview();
+      };
+
+      $('launch-search').oninput = event => {
+        const norm = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+        const query = norm(event.target.value.trim());
+        const selected = $('launch-titular').value;
+        const list = launchProfessors('Titular').filter(p => norm(p.name).includes(query));
+        const keep = list.some(p => p.id === selected) ? selected : '';
+        $('launch-titular').innerHTML = option('',list.length ? 'Selecione o professor' : 'Nenhum professor encontrado','') +
+          list.map(p => option(p.id,p.name,keep)).join('');
+        $('launch-titular').value = keep;
+        $('launch-titular').dispatchEvent(new Event('change'));
+      };
+
+      $('launch-date').onchange = event => { state.launchDate = event.target.value; };
+
+      // S� limpa os hor�rios ao entrar/sair de "Faltou" (hor�rio do substituto);
+      // alternar entre Presente e Reuni�o mant�m o que j� foi digitado.
+      $('launch-absent').onchange = () =>
+        absenceChanged(($('launch-absent').value === 'Sim') !== lastAbsent);
+      $('launch-reason').onchange = reasonChanged;
+      $('real-start').oninput = preview;
+      $('real-end').oninput = preview;
+      absenceChanged(false);
+
+      $('launch-form').onsubmit = async event => {
+        event.preventDefault();
+
+        const button = $('launch-save');
+        const absent = $('launch-absent').value === 'Sim';
+
+        const reason = absent
+          ? ($('launch-reason').value === '__outro__'
+              ? $('other-reason').value.trim()
+              : $('launch-reason').value)
+          : '';
+
+        const args = [
+          $('launch-titular').value,
+          $('launch-date').value,
+          absent ? 'Sim' : 'N�o',
+          absent ? $('launch-substitute').value : '',
+          reason,
+          $('real-start').value,
+          $('real-end').value,
+          $('launch-absent').value === 'Reuni�o' ? 'Sim' : 'N�o'
+        ];
+
+        button.disabled = true;
+
+        try {
+          let record = await rpc('addRecord',args);
+          let replaced = false;
+          while (record.needsOverwrite) {
+            const name = professor(args[0]).name;
+            const accepted = window.confirm(
+              'J� existe um lan�amento para '+name+' em '+dateLabel(args[1])+'.\n'+
+              'Hor�rio real salvo: '+record.realStart+'-'+record.realEnd+'.\n\n'+
+              'ATEN��O: ao confirmar, os hor�rios, a informa��o de falta, o substituto e o motivo ser�o REESCRITOS pelos dados deste formul�rio.\n'+
+              'Esta a��o substitui o lan�amento anterior. Deseja sobrescrever?');
+            if (!accepted) return;
+            record = await rpc('addRecord',args.concat(record.token));
+            replaced = true;
+          }
+          state.records = state.records.filter(r =>
+            !(r.titularId === args[0] && r.date === args[1]));
+          state.records.push(record);
+          state.launchDate = args[1];
+          const list = launchProfessors('Titular');
+          const index = list.findIndex(p => p.id === args[0]);
+          const next = list[index + 1];
+          state.titularId = next ? next.id : args[0];
+          notify((replaced ? 'Lan�amento sobrescrito.' : 'Lan�amento registrado.') +
+            (next ? ' Pr�ximo professor: '+next.name+'.' : ' Voc� chegou ao final da lista.'));
+          if ($('real-start')) $('real-start').focus();
+        } catch (error) {
+          flash('launch-flash','err',errorMessage(error));
+        } finally {
+          button.disabled = false;
+        }
+      };
+    }
+
+    function reportRange() {
+      const value = /^\d{4}-\d{2}-\d{2}$/.test(state.reportDate)
+        ? state.reportDate : new Date().toISOString().slice(0,10);
+      const d = new Date(value+'T12:00:00Z');
+      let start = new Date(d), end = new Date(d);
+      if (state.reportMode === 'semana') {
+        start.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));
+        end = new Date(start); end.setUTCDate(start.getUTCDate()+6);
+      } else if (state.reportMode === 'mes') {
+        start = new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),1,12));
+        end = new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0,12));
+      } else {
+        const month = d.getUTCMonth() < 6 ? 0 : 6;
+        start = new Date(Date.UTC(d.getUTCFullYear(),month,1,12));
+        end = new Date(Date.UTC(d.getUTCFullYear(),month+6,0,12));
+      }
+      return { start:start.toISOString().slice(0,10), end:end.toISOString().slice(0,10) };
+    }
+
+    function reportRecords() {
+      const range = reportRange();
+      return contextRecords().filter(r => r.date >= range.start && r.date <= range.end)
+        .slice().sort((a,b) => a.date.localeCompare(b.date) ||
+          (professor(a.responsibleId)?.name || '').localeCompare(
+            professor(b.responsibleId)?.name || '', 'pt-BR', {sensitivity:'base'}));
+    }
+
+    function reportControls() {
+      const range = reportRange();
+      return `<section class="box">
+        <h2>Imprimir relat�rio de horas</h2>
+        <div class="fields">
+          <label class="field">Per�odo<select id="report-mode">
+            ${option('semana','Semana',state.reportMode)}
+            ${option('mes','M�s',state.reportMode)}
+            ${option('semestre','Semestre letivo',state.reportMode)}
+          </select></label>
+          <label class="field">Data de refer�ncia
+            <input type="date" id="report-date" value="${esc(state.reportDate)}" required>
+          </label>
+          <button class="button" id="report-print" ${reportRecords().length ? '' : 'disabled'}>Imprimir / exportar PDF</button>
+        </div>
+        <p>Per�odo: ${dateLabel(range.start)} a ${dateLabel(range.end)} � ${reportRecords().length} lan�amentos.</p>
+        <p class="sub">Usa o semestre e turno selecionados no topo. Semana: segunda a domingo. Semestre letivo: janeiro a junho ou julho a dezembro, conforme a data de refer�ncia.</p>
+        ${reportRecords().length ? '' : '<p>Nenhum lan�amento neste per�odo.</p>'}
+      </section>
+
+      <section class="box">
+        <h2>Backup</h2>
+        <p class="sub">
+          Cria uma c�pia oculta de todos os dados (professores, lan�amentos,
+          coordenadores e motivos) numa nova aba da planilha, sem alterar
+          nada do que j� existe. �til antes de uma edi��o grande.
+        </p>
+        <button class="button ghost" id="backup-create">Criar backup agora</button>
+        <div class="flash" id="backup-flash"></div>
+      </section>`;
+    }
+
+    function reportPrintHtml() {
+      const rows = reportRecords(), range = reportRange();
+      return `<div class="report-print"><h2>Relat�rio de carga hor�ria</h2>
+        <p>${esc(state.semester)} semestre � ${esc(state.turno)} � ${dateLabel(range.start)} a ${dateLabel(range.end)}</p>
+        <table><thead><tr><th>Data</th><th>Professor que ministrou</th><th>Hor�rio previsto</th><th>Hor�rio real</th><th>Carga hor�ria</th></tr></thead>
+        <tbody>${rows.map(r => `<tr><td>${dateLabel(r.date)}${r.meeting
+            ? '<br><em>Reuni�o dos tutores</em>' : ''}</td>
+          <td>${esc(professor(r.responsibleId)?.name || 'Professor n�o encontrado')}</td>
+          <td>${esc(r.plannedStart)}-${esc(r.plannedEnd)}</td>
+          <td>${esc(r.realStart)}-${esc(r.realEnd)}</td><td>${fmt(r.hours)}</td></tr>`).join('')}</tbody>
+        </table><p><strong>Total: ${fmt(sum(rows,'hours'))}</strong></p></div>`;
+    }
+
+    function attachRelatorios() {
+      $('report-mode').onchange = event => { state.reportMode = event.target.value; render(); };
+      $('report-date').onchange = event => {
+        if (event.target.value && event.target.validity.valid) {
+          state.reportDate = event.target.value; render();
+        }
+      };
+      $('report-print').onclick = () => { if (reportRecords().length) window.print(); };
+
+      document.querySelectorAll('[data-delete-record]').forEach(button => {
+        button.onclick = () => openRecordRemoval(button.dataset.deleteRecord);
+      });
+
+      document.querySelectorAll('[data-edit-record]').forEach(button => {
+        button.onclick = () => openRecordEdit(button.dataset.editRecord);
+      });
+
+      $('backup-create').onclick = async () => {
+        const button = $('backup-create');
+        button.disabled = true;
+
+        try {
+          const result = await rpc('exportBackup',[]);
+          notify(result.message);
+        } catch (error) {
+          flash('backup-flash','err',errorMessage(error));
+        } finally {
+          button.disabled = false;
+        }
+      };
+    }
+
+    function openRecordEdit(id) {
+      const record = state.records.find(r => r.id === id);
+
+      if (!record) {
+        notify('Lan�amento n�o encontrado. Atualize a p�gina.');
+        return;
+      }
+
+      const titular = professor(record.titularId);
+      const dialog = $('edit-dialog');
+
+      const substitutes = state.professors.filter(p =>
+        p.type === 'Substituto' &&
+        titular && p.semester === titular.semester &&
+        p.turno === titular.turno &&
+        (isActive(p) || p.id === record.substituteId)
+      ).slice().sort((a,b) =>
+        a.name.localeCompare(b.name,'pt-BR',{sensitivity:'base'}));
+
+      const knownReason = state.reasons.some(r => r.reason === record.reason);
+
+      dialog.innerHTML = `<h2>Editar lan�amento</h2>
+        <p class="sub">
+          ${esc(titular ? titular.name : 'Professor n�o encontrado')} �
+          o titular deste lan�amento n�o pode ser alterado aqui. Para
+          corrigir de quem � a aula, exclua este lan�amento e lance de
+          novo em "Lan�ar horas".
+        </p>
+
+        <form id="edit-record-form">
+          <div class="fields">
+            <label class="field">Data da aula
+              <input type="date" id="er-date" value="${esc(record.date)}" required>
+            </label>
+
+            <label class="field">Situa��o
+              <select id="er-absent">
+                <option value="N�o" ${!record.absent && !record.meeting ? 'selected' : ''}>Presente</option>
+                <option value="Sim" ${record.absent ? 'selected' : ''}>Faltou</option>
+                <option value="Reuni�o" ${record.meeting ? 'selected' : ''}>Reuni�o dos tutores</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="dynamic ${record.absent ? '' : 'hidden'}" id="er-substitution-fields">
+            <div class="fields">
+              <label class="field grow">Professor substituto
+                <select id="er-substitute">
+                  <option value="">Selecione</option>
+                  ${substitutes.map(p => option(p.id,p.name,record.substituteId)).join('')}
+                </select>
+              </label>
+
+              <label class="field grow">Motivo da aus�ncia
+                <select id="er-reason">
+                  <option value="">Selecione</option>
+                  ${state.reasons
+                    .filter(r => r.active && r.reason.toLowerCase() !== 'outro')
+                    .map(r => option(r.reason,r.reason,record.reason)).join('')}
+                  <option value="__outro__" ${record.absent && !knownReason ? 'selected' : ''}>Outro</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field grow hidden" id="er-other-field">
+              Especifique o motivo
+              <input id="er-other-reason" maxlength="150"
+                value="${record.absent && !knownReason ? esc(record.reason) : ''}">
+            </label>
+          </div>
+
+          <div class="fields">
+            <label class="field">
+              <span id="er-real-start-label">In�cio real</span>
+              <input type="time" id="er-real-start" value="${esc(record.realStart)}" required>
+            </label>
+
+            <label class="field">
+              <span id="er-real-end-label">Fim real</span>
+              <input type="time" id="er-real-end" value="${esc(record.realEnd)}" required>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="button" id="er-save">Salvar edi��o</button>
+            <button class="button ghost" type="button" id="er-cancel">Cancelar</button>
+          </div>
+
+          <div class="flash" id="er-flash"></div>
+        </form>`;
+
+      function toggleAbsence() {
+        const absent = $('er-absent').value === 'Sim';
+
+        $('er-substitution-fields').classList.toggle('hidden',!absent);
+        $('er-substitute').required = absent;
+        $('er-substitute').disabled = !absent;
+        $('er-reason').required = absent;
+        $('er-reason').disabled = !absent;
+
+        $('er-real-start-label').textContent =
+          'In�cio real do '+(absent ? 'substituto' : 'titular');
+        $('er-real-end-label').textContent =
+          'Fim real do '+(absent ? 'substituto' : 'titular');
+
+        reasonChanged();
+      }
+
+      function reasonChanged() {
+        const other = $('er-absent').value === 'Sim' &&
+          $('er-reason').value === '__outro__';
+
+        $('er-other-field').classList.toggle('hidden',!other);
+        $('er-other-reason').required = other;
+        $('er-other-reason').disabled = !other;
+      }
+
+      $('er-absent').onchange = toggleAbsence;
+      $('er-reason').onchange = reasonChanged;
+      $('er-cancel').onclick = () => dialog.close();
+      toggleAbsence();
+
+      $('edit-record-form').onsubmit = async event => {
+        event.preventDefault();
+
+        const button = $('er-save');
+        const absent = $('er-absent').value === 'Sim';
+
+        const reason = absent
+          ? ($('er-reason').value === '__outro__'
+              ? $('er-other-reason').value.trim()
+              : $('er-reason').value)
+          : '';
+
+        button.disabled = true;
+
+        try {
+          const result = await rpc('editRecord',[
+            id,
+            $('er-date').value,
+            absent ? 'Sim' : 'N�o',
+            absent ? $('er-substitute').value : '',
+            reason,
+            $('er-real-start').value,
+            $('er-real-end').value,
+            $('er-absent').value === 'Reuni�o' ? 'Sim' : 'N�o'
+          ]);
+
+          applyData(result.data);
+          dialog.close();
+          notify(result.message);
+        } catch (error) {
+          flash('er-flash','err',errorMessage(error));
+        } finally {
+          button.disabled = false;
+        }
+      };
+
+      dialog.showModal();
+    }
+
+    function openRecordRemoval(id) {
+      const record = state.records.find(r => r.id === id);
+      const dialog = $('remove-dialog');
+
+      dialog.innerHTML = `<h2>Excluir lan�amento</h2>
+        <p>${record ? esc(dateLabel(record.date)) + ' � ' +
+          esc(historyName(record.titularId)) : ''}</p>
+
+        <p class="sub">
+          Esta a��o remove o lan�amento definitivamente da planilha.
+          N�o � um desligamento: o hist�rico deste registro � perdido
+          e n�o pode ser desfeito.
+        </p>
+
+        <form id="remove-record-form">
+          <div class="actions" style="margin-top:18px">
+            <button class="button danger" id="remove-record-confirm">
+              Excluir definitivamente
+            </button>
+
+            <button type="button" class="button ghost" id="remove-record-cancel">
+              Cancelar
+            </button>
+          </div>
+
+          <div class="flash" id="remove-record-flash"></div>
+        </form>`;
+
+      $('remove-record-cancel').onclick = () => dialog.close();
+
+      $('remove-record-form').onsubmit = async event => {
+        event.preventDefault();
+
+        const button = $('remove-record-confirm');
+        button.disabled = true;
+
+        try {
+          const result = await rpc('deleteRecord',[id]);
+          applyData(result.data);
+          dialog.close();
+          notify(result.message);
+        } catch (error) {
+          flash('remove-record-flash','err',errorMessage(error));
+        } finally {
+          button.disabled = false;
+        }
+      };
+
+      dialog.showModal();
+    }
+
+    function relatoriosHtml() {
+      const stats = ranking();
+      const records = contextRecords().slice()
+        .sort((a,b) => b.date.localeCompare(a.date));
+
+      return `<div class="no-print"><h1 class="page-title">Relat�rios</h1>
+        ${reportControls()}
+        <p class="sub">
+          Titulares e substitutos separados. O hist�rico dos desligados � preservado.
+        </p>
+
+        <section>
+          <h2>Ranking dos titulares</h2>
+          ${table(
+            ['Posi��o','Professor','Aulas dadas','Aus�ncias','Horas','M�dia por aula'],
+            stats.map((p,i) => `<tr>
+              <td>${i+1}�</td><td>${esc(p.name)}</td>
+              <td>${p.classes}</td><td>${p.absences}</td>
+              <td>${fmt(p.hours)}</td><td>${fmt(p.average)}</td>
+            </tr>`).join('')
+          )}
+        </section>
+
+        <section>
+          <h2>Professores substitutos</h2>
+          <p class="sub">Ordenados pelo total de horas ministradas.</p>
+          ${substituteTable()}
+        </section>
+
+        <section>
+          <h2>Hist�rico de lan�amentos e aus�ncias</h2>
+          ${table(
+            ['Data','Titular','Situa��o','Substituto','Motivo da aus�ncia','Hor�rio real','Horas','A��es'],
+            records.map(r => `<tr>
+              <td class="nowrap">${dateLabel(r.date)}</td>
+              <td>${esc(historyName(r.titularId))}</td>
+              <td><span class="badge ${r.absent ? 'red' : (r.meeting ? '' : 'green')}">
+                ${r.absent ? 'Faltou' : (r.meeting ? 'Reuni�o dos tutores' : 'Presente')}
+              </span></td>
+              <td>${r.absent ? esc(historyName(r.substituteId)) : '-'}</td>
+              <td>${r.absent ? esc(r.reason || 'N�o informado') : '-'}</td>
+              <td class="nowrap">${esc(r.realStart)}-${esc(r.realEnd)}</td>
+              <td class="nowrap">${fmt(r.hours)}</td>
+              <td class="nowrap">${r.id ? `
+                <button class="button ghost small" data-edit-record="${esc(r.id)}">Editar</button>
+                <button class="button danger small" data-delete-record="${esc(r.id)}">Excluir</button>
+              ` : ''}</td>
+            </tr>`).join('')
+          )}
+        </section></div><div class="print-only">${reportPrintHtml()}</div>`;
+    }
+
+    function professorTable(list,inactive) {
+      return table(
+        ['Professor','E-mail','Semestre','Turno','Aulas previstas',
+         inactive ? 'Motivo do desligamento' : 'Hor�rio','A��es'],
+        list.map(p => `<tr>
+          <td>${esc(p.name)}</td>
+          <td>${esc(p.email || 'N�o informado')}</td>
+          <td>${esc(p.semester)}</td>
+          <td>${esc(p.turno)}</td>
+          <td>${p.plannedClasses}</td>
+          <td>${inactive
+            ? esc(p.departureReason || 'N�o informado')
+            : esc(p.defaultStart)+'-'+esc(p.defaultEnd)}</td>
+          <td class="nowrap">
+            <button class="button ghost small"
+              data-edit="${esc(p.id)}">Editar</button>
+            ${inactive
+              ? `<button class="button ghost small"
+                  data-reactivate="${esc(p.id)}">Reativar</button>`
+              : `<button class="button danger small"
+                  data-remove="${esc(p.id)}">Excluir</button>`}
+          </td>
+        </tr>`).join('')
+      );
+    }
+
+    function cadastroHtml(type) {
+      const list = contextProfessors(type,false)
+        .slice().sort((a,b) => a.name.localeCompare(b.name));
+
+      return `<h1 class="page-title">
+          Professores ${type === 'Titular' ? 'titulares' : 'substitutos'}
+        </h1>
+
+        <p class="sub">
+          ${esc(state.semester || '-')} � ${esc(state.turno || '-')}.
+          Use os filtros superiores para consultar outros cadastros.
+        </p>
+
+        <div class="actions">
+          <button class="button" id="new-professor"
+            data-type="${type}">Cadastrar professor</button>
+        </div>
+
+        <section>
+          <h2>Professores ativos</h2>
+          ${professorTable(list.filter(isActive),false)}
+        </section>
+
+        <section>
+          <h2>Professores desligados</h2>
+          <p class="sub">
+            N�o aparecem em novos lan�amentos. Os registros antigos permanecem nos relat�rios.
+          </p>
+          ${professorTable(list.filter(p => !isActive(p)),true)}
+        </section>`;
+    }
+
+    function attachCadastro() {
+      $('new-professor').onclick = () =>
+        openProfessor(null,$('new-professor').dataset.type);
+
+      document.querySelectorAll('[data-edit]').forEach(button => {
+        button.onclick = () => openProfessor(professor(button.dataset.edit));
+      });
+
+      document.querySelectorAll('[data-remove]').forEach(button => {
+        button.onclick = () => openRemoval(professor(button.dataset.remove));
+      });
+
+      document.querySelectorAll('[data-reactivate]').forEach(button => {
+        button.onclick = async () => {
+          const p = professor(button.dataset.reactivate);
+
+          if (!confirm('Reativar '+p.name+' para novos lan�amentos?')) return;
+
+          button.disabled = true;
+
+          try {
+            applyData(await rpc('reactivateProfessor',[p.id]));
+            notify('Professor reativado.');
+          } catch (error) {
+            flash('global-flash','err',errorMessage(error));
+            button.disabled = false;
+          }
+        };
+      });
+    }
+
+    function openProfessor(existing,newType) {
+      const p = existing || {
+        id:'',
+        name:'',
+        email:'',
+        type:newType || 'Titular',
+        semester:state.semester || '',
+        turno:state.turno || 'Manh�',
+        plannedClasses:0
+      };
+
+      const hasHistory = !!existing && linked(p.id);
+      const dialog = $('professor-dialog');
+
+      dialog.innerHTML = `<h2>${existing ? 'Editar' : 'Cadastrar'} professor</h2>
+
+        <form id="professor-form">
+          <div class="fields">
+            <label class="field grow">Nome completo
+              <input id="edit-name" value="${esc(p.name)}"
+                maxlength="200" required>
+            </label>
+          </div>
+
+          <div class="fields">
+            <label class="field grow">E-mail opcional
+              <input type="email" id="edit-email" value="${esc(p.email)}">
+            </label>
+          </div>
+
+          <div class="fields">
+            <label class="field">Tipo
+              <select id="edit-type" ${hasHistory ? 'disabled' : ''}>
+                ${['Titular','Substituto']
+                  .map(t => option(t,t,p.type)).join('')}
+              </select>
+            </label>
+
+            <label class="field">Aulas previstas
+              <input type="number" min="0" step="1"
+                id="edit-classes" value="${p.plannedClasses}" required>
+            </label>
+          </div>
+
+          <div class="fields">
+            <label class="field">Semestre
+              <input id="edit-semester" value="${esc(p.semester)}"
+                ${hasHistory ? 'readonly' : ''} required>
+            </label>
+
+            <label class="field">Turno
+              <select id="edit-turno" ${hasHistory ? 'disabled' : ''}>
+                ${Object.keys(TIMES).map(t => option(t,t,p.turno)).join('')}
+              </select>
+            </label>
+          </div>
+
+          <p class="hint" id="edit-times"></p>
+
+          ${hasHistory ? `<p class="hint">
+            Este professor possui registros. Tipo, semestre e turno ficam
+            bloqueados para preservar o hist�rico. A altera��o do nome
+            tamb�m ser� refletida nos relat�rios antigos.
+          </p>` : ''}
+
+          <div class="actions">
+            <button class="button" id="edit-save">Salvar</button>
+            <button class="button ghost" type="button" id="edit-cancel">
+              Cancelar
+            </button>
+          </div>
+
+          <div class="flash" id="edit-flash"></div>
+        </form>`;
+
+      function updateFields() {
+        const substitute = $('edit-type').value === 'Substituto';
+        $('edit-classes').disabled = substitute;
+
+        if (substitute) $('edit-classes').value = 0;
+
+        const times = hasHistory
+          ? {start:p.defaultStart,end:p.defaultEnd}
+          : TIMES[$('edit-turno').value];
+
+        $('edit-times').textContent =
+          'Hor�rio previsto: '+times.start+' �s '+times.end+'.';
+      }
+
+      $('edit-type').onchange = updateFields;
+      $('edit-turno').onchange = updateFields;
+      $('edit-cancel').onclick = () => dialog.close();
+      updateFields();
+
+      $('professor-form').onsubmit = async event => {
+        event.preventDefault();
+
+        const data = {
+          id:p.id,
+          name:$('edit-name').value.trim(),
+          email:$('edit-email').value.trim(),
+          type:$('edit-type').value,
+          plannedClasses:Number($('edit-classes').value),
+          semester:$('edit-semester').value.trim(),
+          turno:$('edit-turno').value
+        };
+
+        const button = $('edit-save');
+        button.disabled = true;
+
+        try {
+          applyData(await rpc('saveProfessor',[data]));
+          state.semester = data.semester;
+          state.turno = data.turno;
+          state.view = data.type === 'Titular' ? 'titulares' : 'substitutos';
+          dialog.close();
+          notify('Cadastro salvo com sucesso.');
+        } catch (error) {
+          flash('edit-flash','err',errorMessage(error));
+        } finally {
+          button.disabled = false;
+        }
+      };
+
+      dialog.showModal();
+    }
+
+    function openRemoval(p) {
+      const hasHistory = linked(p.id);
+      const dialog = $('remove-dialog');
+
+      dialog.innerHTML = `<h2>${hasHistory ? 'Desligar professor' : 'Excluir cadastro'}</h2>
+        <p>${esc(p.name)}</p>
+
+        <p class="sub">${hasHistory
+          ? 'Existem registros vinculados. O professor ser� desligado e n�o aparecer� em novos lan�amentos. Nenhuma aula ser� apagada.'
+          : 'N�o foram encontrados registros vinculados. A confirma��o excluir� definitivamente este cadastro.'}
+        </p>
+
+        <form id="remove-form">
+          <label class="field grow ${hasHistory ? '' : 'hidden'}">
+            Motivo do desligamento
+            <input id="departure-reason" maxlength="200"
+              ${hasHistory ? 'required' : ''}>
+          </label>
+
+          <div class="actions" style="margin-top:18px">
+            <button class="button danger" id="remove-confirm">
+              ${hasHistory ? 'Confirmar desligamento' : 'Excluir definitivamente'}
+            </button>
+
+            <button type="button" class="button ghost" id="remove-cancel">
+              Cancelar
+            </button>
+          </div>
+
+          <div class="flash" id="remove-flash"></div>
+        </form>`;
+
+      $('remove-cancel').onclick = () => dialog.close();
+
+      $('remove-form').onsubmit = async event => {
+        event.preventDefault();
+
+        const button = $('remove-confirm');
+        button.disabled = true;
+
+        try {
+          const result = await rpc('removeProfessor',[
+            p.id,
+            $('departure-reason').value.trim()
+          ]);
+
+          applyData(result.data);
+          dialog.close();
+          notify(result.message);
+        } catch (error) {
+          flash('remove-flash','err',errorMessage(error));
+
+          // Outro coordenador pode ter registrado uma aula neste intervalo.
+          $('departure-reason').parentElement.classList.remove('hidden');
+          $('departure-reason').required = true;
+          button.textContent = 'Confirmar desligamento';
+        } finally {
+          button.disabled = false;
+        }
+      };
+
+      dialog.showModal();
+    }
+
+    function motivosHtml() {
+      return `<h1 class="page-title">Motivos de aus�ncia</h1>
+        <p class="sub">
+          Motivos desativados deixam de aparecer nos novos lan�amentos,
+          mas permanecem no hist�rico.
+        </p>
+
+        <form class="box" id="reason-form">
+          <div class="fields">
+            <label class="field grow">Novo motivo
+              <input id="reason-name" maxlength="150" required>
+            </label>
+
+            <button class="button" id="reason-save">Cadastrar motivo</button>
+          </div>
+          <div class="flash" id="reason-flash"></div>
+        </form>
+
+        ${table(
+          ['Motivo','Situa��o','A��o'],
+          state.reasons.map((r,i) => `<tr>
+            <td>${esc(r.reason)}</td>
+            <td>${r.active ? 'Ativo' : 'Inativo'}</td>
+            <td><button class="button ghost small" data-reason="${i}">
+              ${r.active ? 'Desativar' : 'Ativar'}
+            </button></td>
+          </tr>`).join('')
+        )}`;
+    }
+
+    function attachMotivos() {
+      $('reason-form').onsubmit = async event => {
+        event.preventDefault();
+        const button = $('reason-save');
+        button.disabled = true;
+
+        try {
+          state.reasons = await rpc('addAbsenceReason',[
+            $('reason-name').value.trim()
+          ]);
+          notify('Motivo cadastrado.');
+        } catch (error) {
+          flash('reason-flash','err',errorMessage(error));
+        } finally {
+          button.disabled = false;
+        }
+      };
+
+      document.querySelectorAll('[data-reason]').forEach(button => {
+        button.onclick = async () => {
+          const reason = state.reasons[Number(button.dataset.reason)];
+          button.disabled = true;
+
+          try {
+            state.reasons = await rpc('setAbsenceReasonActive',[
+              reason.reason,!reason.active
+            ]);
+            notify('Situa��o do motivo atualizada.');
+          } catch (error) {
+            flash('global-flash','err',errorMessage(error));
+            button.disabled = false;
+          }
+        };
+      });
+    }
+
+    function coordenadoresHtml() {
+      return `<h1 class="page-title">Coordenadores</h1>
+        <p class="sub">
+          S� os e-mails institucionais listados aqui conseguem abrir o
+          sistema como coordenador - a identifica��o usa a pr�pria
+          conta Google de quem acessa, sem senha ou login separado.
+        </p>
+
+        <form class="box" id="coordinator-form">
+          <div class="fields">
+            <label class="field grow">E-mail institucional
+              <input type="email" id="coordinator-email" required>
+            </label>
+
+            <button class="button" id="coordinator-save">Adicionar coordenador</button>
+          </div>
+          <div class="flash" id="coordinator-flash"></div>
+        </form>
+
+        ${table(
+          ['E-mail','A��o'],
+          state.coordinators.map(email => `<tr>
+            <td>${esc(email)}</td>
+            <td>
+              <button class="button danger small" data-coordinator="${esc(email)}"
+                ${state.coordinators.length <= 1 ? 'disabled title="Cadastre outro e-mail antes de remover este."' : ''}>
+                Remover
+              </button>
+            </td>
+          </tr>`).join('')
+        )}`;
+    }
+
+    function attachCoordenadores() {
+      $('coordinator-form').onsubmit = async event => {
+        event.preventDefault();
+        const button = $('coordinator-save');
+        button.disabled = true;
+
+        try {
+          state.coordinators = await rpc('addCoordinator',[
+            $('coordinator-email').value.trim()
+          ]);
+          notify('Coordenador cadastrado.');
+        } catch (error) {
+          flash('coordinator-flash','err',errorMessage(error));
+        } finally {
+          button.disabled = false;
+        }
+      };
+
+      document.querySelectorAll('[data-coordinator]').forEach(button => {
+        button.onclick = async () => {
+          const email = button.dataset.coordinator;
+
+          if (!window.confirm(
+            'Remover '+email+' da lista de coordenadores?\n'+
+            'Essa pessoa deixa de conseguir abrir o sistema imediatamente.'
+          )) return;
+
+          button.disabled = true;
+
+          try {
+            state.coordinators = await rpc('removeCoordinator',[email]);
+            notify('Coordenador removido.');
+          } catch (error) {
+            flash('global-flash','err',errorMessage(error));
+            button.disabled = false;
+          }
+        };
+      });
+    }
+
+    function fichaRow(label,value) {
+      return `<div class="ficha-row">
+        <span>${label}</span><strong>${value}</strong>
+      </div>`;
+    }
+
+    function printFicha(p,stats,rank) {
+      const maximum = Math.max(...rank.map(r => r.average),0.1);
+
+      const compact = rank.length > 17 && rank.length <= 25;
+      return `<div class="ficha ficha-print ${compact ? 'ficha-compact' : ''}">
+        <h2 class="ficha-title">Ficha Individual de Desempenho Docente</h2>
+
+        <p class="print-note">
+          ${esc(p.semester)} � ${esc(p.turno)} �
+          Documento de uso individual - n�o circular
+        </p>
+
+        <div class="ficha-professor">${esc(p.name)}</div>
+
+        <div class="ficha-section">Resumo do per�odo</div>
+        ${fichaRow('Aulas previstas no semestre',p.plannedClasses)}
+        ${fichaRow('Aulas dadas pelo professor',stats.classes)}
+        ${fichaRow('M�dia de horas por aula',fmt(stats.average))}
+
+        <div class="ficha-section">
+          Comparativo an�nimo - horas por aula
+        </div>
+
+        <p class="print-note">
+          Os nomes dos demais titulares n�o s�o exibidos.
+          S�o apresentados somente a posi��o e a m�dia por aula.
+        </p>
+
+        <div class="anonymous">
+          ${rank.map((r,i) => `<div class="bar-row">
+            <div>${r.id === p.id ? '<span class="badge">Voc�</span>' : ''}</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="
+                width:${r.average/maximum*100}%;
+                background:${r.id === p.id ? '#b8863b' : '#c7c2b4'}">
+              </div>
+            </div>
+            <div class="right">${fmt(r.average)}</div>
+          </div>`).join('')}
+        </div>
+
+        <p class="print-note">
+          Gerado em ${new Date().toLocaleDateString('pt-BR')}.
+          Confidencial, para uso individual.
+        </p>
+      </div>`;
+    }
+
+    function fichaPrintProfessors() {
+      return contextProfessors('Titular',false).slice().sort((a,b) =>
+        a.name.replace(/^dra?\.?\s*/i,'').localeCompare(
+          b.name.replace(/^dra?\.?\s*/i,''),'pt-BR',{sensitivity:'base'}));
+    }
+
+    function selectedFichas() {
+      const all = fichaPrintProfessors();
+      if (state.fichaPrintMode === 'todos') return all;
+      if (state.fichaPrintMode === 'selecionados') {
+        return all.filter(p => state.fichaPrintIds.includes(p.id));
+      }
+      return all.filter(p => p.id === state.fichaId);
+    }
+
+    function fichaBatchHtml(rank) {
+      return selectedFichas().map(p =>
+        '<div class="ficha-batch-item">'+
+        printFicha(p,rank.find(r => r.id === p.id),rank)+'</div>').join('');
+    }
+
+    function fichaHtml() {
+      const titulars = fichaPrintProfessors();
+      const context = JSON.stringify([state.semester,state.turno]);
+      if (state.fichaPrintContext !== context) {
+        state.fichaPrintContext = context;
+        state.fichaPrintMode = 'atual';
+        state.fichaPrintIds = [];
+        state.showPrintPreview = false;
+      }
+      state.fichaPrintIds = state.fichaPrintIds.filter(id => titulars.some(p => p.id === id));
+
+      if (!titulars.some(p => p.id === state.fichaId)) {
+        state.fichaId = titulars.length ? titulars[0].id : null;
+      }
+
+      if (!state.fichaId) {
+        return `<h1 class="page-title">Ficha individual</h1>
+          <div class="empty">Nenhum titular cadastrado.</div>`;
+      }
+
+      const p = professor(state.fichaId);
+      const rank = ranking();
+      const stats = rank.find(r => r.id === p.id);
+      const position = rank.findIndex(r => r.id === p.id)+1;
+      const printed = fichaBatchHtml(rank);
+      const printCount = selectedFichas().length;
+
+      return `<div class="no-print">
+        <h1 class="page-title">Ficha individual</h1>
+        <p class="sub">
+          A coordena��o v� a ficha completa.
+          O professor recebe somente o resumo e o comparativo an�nimo.
+        </p>
+
+        <div class="fields">
+          <label class="field grow">Professor titular
+            <select id="ficha-professor">
+              ${titulars.map(p =>
+                option(p.id,historyName(p.id),state.fichaId)
+              ).join('')}
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="screen-ficha">
+        <div class="ficha">
+          <h2 class="ficha-title">Ficha Individual de Desempenho Docente</h2>
+          <p class="sub">
+            Vis�o completa da coordena��o �
+            ${esc(p.semester)} � ${esc(p.turno)}
+          </p>
+
+          <div class="ficha-professor">${esc(historyName(p.id))}</div>
+
+          <div class="ficha-section">Resumo completo do per�odo</div>
+          ${fichaRow('Aulas previstas no semestre',p.plannedClasses)}
+          ${fichaRow('Aulas ministradas pelo titular',stats.classes)}
+          ${fichaRow('Aus�ncias registradas',stats.absences)}
+          ${fichaRow('Horas previstas das aulas ministradas',fmt(stats.planned))}
+          ${fichaRow('Horas ministradas pelo titular',fmt(stats.hours))}
+          ${fichaRow('Saldo das aulas ministradas',
+            `<span class="${stats.saldo >= 0 ? 'positive' : 'negative'}">
+              ${stats.saldo >= 0 ? '+' : ''}${fmt(stats.saldo)}
+            </span>`)}
+          ${fichaRow('M�dia de horas por aula',fmt(stats.average))}
+
+          <div class="ficha-section">Ranking dos titulares</div>
+          ${fichaRow('Classifica��o',position+'� posi��o de '+rank.length+' professores')}
+        </div>
+      </div>
+
+      <section class="no-print">
+        <h2>Impress�o para o professor</h2>
+        <p class="sub">
+          N�o imprime aus�ncias, motivo de desligamento, saldo,
+          total de horas nem nomes dos outros professores.
+        </p>
+
+        <p><strong>${esc(state.semester)} semestre � ${esc(state.turno)}</strong></p>
+        <label class="field">Quais fichas imprimir?
+          <select id="ficha-print-mode">
+            ${option('atual','Somente o professor exibido',state.fichaPrintMode)}
+            ${option('selecionados','Escolher um ou mais professores',state.fichaPrintMode)}
+            ${option('todos','Todos deste semestre e turno',state.fichaPrintMode)}
+          </select>
+        </label>
+        ${state.fichaPrintMode === 'selecionados' ? `<div class="box" style="margin:16px 0">
+          <div class="actions">
+            <button type="button" class="button ghost" id="ficha-select-all">Selecionar todos</button>
+            <button type="button" class="button ghost" id="ficha-clear-all">Limpar sele��o</button>
+          </div>
+          ${titulars.map(item => `<label style="display:flex;align-items:center;gap:10px;margin:10px 0">
+            <input type="checkbox" data-ficha-select="${esc(item.id)}" ${state.fichaPrintIds.includes(item.id) ? 'checked' : ''}>
+            <span>${esc(item.name)}${isActive(item) ? '' : ' (desligado)'}</span>
+          </label>`).join('')}
+        </div>` : ''}
+        <p>${printCount} ficha(s) para impress�o. Cada ficha come�a em uma nova p�gina.
+          ${printCount ? '' : 'Selecione pelo menos um professor.'}</p>
+        <div class="actions">
+          <button class="button ghost" id="preview" ${printCount ? '' : 'disabled'}>
+            ${state.showPrintPreview ? 'Ocultar pr�-visualiza��o' : 'Ver pr�-visualiza��o'}
+          </button>
+          <button class="button" id="print" ${printCount ? '' : 'disabled'}>Imprimir ${printCount} ficha(s) / exportar PDF</button>
+        </div>
+      </section>
+
+      <div class="print-preview no-print ${state.showPrintPreview ? '' : 'hidden'}">
+        ${printed}
+      </div>
+
+      <div class="print-only">${printed}</div>`;
+    }
+
+    function attachFicha() {
+      if (!$('ficha-professor')) return;
+
+      $('ficha-professor').onchange = event => {
+        state.fichaId = event.target.value;
+        state.showPrintPreview = false;
+        render();
+      };
+
+      $('preview').onclick = () => {
+        state.showPrintPreview = !state.showPrintPreview;
+        render();
+      };
+
+      $('ficha-print-mode').onchange = event => {
+        state.fichaPrintMode = event.target.value;
+        render();
+      };
+      document.querySelectorAll('[data-ficha-select]').forEach(input => {
+        input.onchange = () => {
+          state.fichaPrintIds = Array.from(document.querySelectorAll('[data-ficha-select]:checked'))
+            .map(item => item.dataset.fichaSelect);
+          render();
+        };
+      });
+      if ($('ficha-select-all')) $('ficha-select-all').onclick = () => {
+        state.fichaPrintIds = fichaPrintProfessors().map(p => p.id); render();
+      };
+      if ($('ficha-clear-all')) $('ficha-clear-all').onclick = () => {
+        state.fichaPrintIds = []; render();
+      };
+      $('print').onclick = () => { if (selectedFichas().length) window.print(); };
+    }
+
+    async function init() {
+      setTheme(initialTheme());
+      $('app').innerHTML = `<div class="loading"><div class="spinner"></div>Carregando.</div>`;
+
+      try {
+        // Uma s� chamada ao servidor (identifica��o + dados iniciais)
+        // em vez de duas sequenciais - carrega bem mais r�pido.
+        const boot = await rpc('boot',[]);
+        state.info = boot.info;
+
+        if (!state.info.authorized) {
+          $('app').innerHTML = `<div class="loading">
+            Acesso restrito aos coordenadores cadastrados.<br>
+            E-mail: ${esc(state.info.email || 'n�o identificado')}
+          </div>`;
+          return;
+        }
+
+        applyData(boot.data);
+        render();
+      } catch (error) {
+        $('app').innerHTML = `<div class="loading">
+          ${esc(errorMessage(error))}<br><br>
+          <button class="button" id="retry">Tentar novamente</button>
+        </div>`;
+
+        $('retry').onclick = init;
+      }
+    }
+
+// Ponte exclusiva da pr�via. Nenhuma chamada ao Apps Script � executada.
+// Todas as fun��es originais de interface e impress�o permanecem no arquivo.
+const DEMO_ONLY=true;
+function demoInitialData(){
+  const names=['Dra. Ana Monteiro','Bruno Azevedo','Dr. Carlos Duarte','Daniela Nogueira','Elisa Costa','F�bio Ribeiro','L�via Albuquerque','Marcos Sampaio'];
+  const professors=names.map((name,i)=>({id:'demo-p'+i,name,email:'docente'+i+'@example.com',type:i<6?'Titular':'Substituto',semester:'2026.2',turno:'Manh�',plannedClasses:i<6?20:0,defaultStart:'08:00',defaultEnd:'11:00',active:true,departureReason:''}));
+  professors.push({id:'demo-old',name:'Alice Freitas',email:'historico@example.com',type:'Titular',semester:'2026.2',turno:'Manh�',plannedClasses:12,defaultStart:'08:00',defaultEnd:'11:00',active:false,departureReason:'Encerramento do v�nculo - exemplo'});
+  professors.push({...professors[0],id:'demo-tarde',name:'Clara Dias',semester:'2026.2',turno:'Tarde',defaultStart:'14:00',defaultEnd:'17:00'});
+  professors.push({...professors[0],id:'demo-semestre',name:'Jo�o Fernandes',semester:'2026.1'});
+  const records=[];let id=0;
+  for(let i=0;i<6;i++)for(let j=0;j<5;j++){const p=professors[i],absent=(i===0&&j===4)||(i===2&&j===3),substituteId=absent?'demo-p6':'',realStart=i===0?'08:10':i===3?'07:50':'08:00',realEnd=i===1?'10:40':'11:00';records.push({id:'demo-r'+(++id),titularId:p.id,date:['2026-10-12','2026-10-19','2026-10-26','2026-11-02','2026-11-09'][j],absent,meeting:j===2,substituteId,responsibleId:absent?substituteId:p.id,reason:absent?'Atividade institucional':'',plannedStart:p.defaultStart,plannedEnd:p.defaultEnd,plannedHours:hours(p.defaultStart,p.defaultEnd),realStart,realEnd,hours:hours(realStart,realEnd)});}
+  records.push({id:'demo-historico',titularId:'demo-old',date:'2026-10-05',absent:false,meeting:false,substituteId:'',responsibleId:'demo-old',reason:'',plannedStart:'08:00',plannedEnd:'11:00',plannedHours:3,realStart:'08:00',realEnd:'10:30',hours:2.5});
+  return {professors,records,reasons:[{reason:'Atividade institucional',active:true},{reason:'Compromisso acad�mico',active:true},{reason:'Motivo pessoal',active:true},{reason:'Motivo anterior',active:false}],coordinators:['coordenacao@example.com','apoio@example.com']};
+}
+let demoDB=demoInitialData(),demoBackups=[];
+const demoClone=x=>JSON.parse(JSON.stringify(x));
+function demoRecord(args,id){
+  const [titularId,date,absence,substituteId,reason,realStart,realEnd,meeting]=args,p=demoDB.professors.find(p=>p.id===titularId),absent=absence==='Sim';
+  if(!p||!isActive(p)||p.type!=='Titular')throw Error('Selecione um professor titular ativo.');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date||''))throw Error('Informe uma data v�lida.');
+  if(!realStart||!realEnd||hours(realStart,realEnd)<=0)throw Error('O fim real precisa ser depois do in�cio.');
+  if(absent){const sub=demoDB.professors.find(p=>p.id===substituteId);if(!sub||!isActive(sub)||sub.type!=='Substituto'||sub.semester!==p.semester||sub.turno!==p.turno)throw Error('Selecione um substituto ativo do mesmo contexto.');if(!String(reason||'').trim())throw Error('Informe o motivo da aus�ncia.');}
+  return {id:id||'demo-r'+crypto.randomUUID(),titularId,date,absent,meeting:!absent&&meeting==='Sim',substituteId:absent?substituteId:'',responsibleId:absent?substituteId:titularId,reason:absent?reason:'',plannedStart:p.defaultStart,plannedEnd:p.defaultEnd,plannedHours:hours(p.defaultStart,p.defaultEnd),realStart,realEnd,hours:hours(realStart,realEnd)};
+}
+rpc=async function demoRPC(name,args=[]){
+  // Bloqueia por constru��o qualquer fallback para google.script.run.
+  const reply=x=>demoClone(x),get=id=>demoDB.professors.find(p=>p.id===id),fail=s=>{throw Error(s)};
+  if(name==='boot')return reply({info:{authorized:true,email:'coordenacao@example.com'},data:demoDB});
+  if(name==='addRecord'){
+    const previous=demoDB.records.find(r=>r.titularId===args[0]&&r.date===args[1]);
+    const updated=demoRecord(args,previous?.id);
+    if(previous&&args[8]!=='simulacao-'+previous.id)return {needsOverwrite:true,realStart:previous.realStart,realEnd:previous.realEnd,token:'simulacao-'+previous.id};
+    demoDB.records=demoDB.records.filter(r=>r.id!==previous?.id);demoDB.records.push(updated);return reply(updated);
+  }
+  if(name==='editRecord'){
+    const old=demoDB.records.find(r=>r.id===args[0]);if(!old)fail('Lan�amento n�o encontrado.');
+    const p=get(old.titularId),active=p.active;p.active=true;
+    let updated;try{updated=demoRecord([old.titularId,...args.slice(1)],old.id)}finally{p.active=active}
+    if(demoDB.records.some(r=>r.id!==old.id&&r.titularId===old.titularId&&r.date===updated.date))fail('J� existe um lan�amento para este professor nessa data.');
+    demoDB.records=demoDB.records.map(r=>r.id===old.id?updated:r);return reply({data:demoDB,message:'Lan�amento fict�cio editado.'});
+  }
+  if(name==='deleteRecord'){demoDB.records=demoDB.records.filter(r=>r.id!==args[0]);return reply({data:demoDB,message:'Lan�amento fict�cio exclu�do.'});}
+  if(name==='saveProfessor'){
+    const d={...args[0]},old=get(d.id),hasHistory=old&&demoDB.records.some(r=>[r.titularId,r.substituteId,r.responsibleId].includes(old.id));
+    if(!d.name?.trim()||!d.semester||!TIMES[d.turno])fail('Confira nome, semestre e turno.');
+    if(!Number.isInteger(d.plannedClasses)||d.plannedClasses<0)fail('Aulas previstas deve ser um inteiro n�o negativo.');
+    if(hasHistory&&(d.type!==old.type||d.semester!==old.semester||d.turno!==old.turno))fail('Tipo, semestre e turno devem preservar o hist�rico.');
+    if(demoDB.professors.some(p=>p.id!==d.id&&p.name.toLocaleLowerCase()===d.name.toLocaleLowerCase()&&p.semester===d.semester&&p.turno===d.turno&&p.type===d.type))fail('Este professor j� est� cadastrado neste contexto.');
+    const time=TIMES[d.turno];const p={...old,...d,id:old?.id||'demo-p'+crypto.randomUUID(),active:old?.active??true,defaultStart:hasHistory?old.defaultStart:time.start,defaultEnd:hasHistory?old.defaultEnd:time.end,plannedClasses:d.type==='Substituto'?0:d.plannedClasses};
+    demoDB.professors=demoDB.professors.filter(x=>x.id!==p.id);demoDB.professors.push(p);return reply(demoDB);
+  }
+  if(name==='removeProfessor'){
+    const p=get(args[0]);if(!p)fail('Professor n�o encontrado.');const history=demoDB.records.some(r=>[r.titularId,r.substituteId,r.responsibleId].includes(p.id));
+    if(history){if(!args[1]?.trim())fail('Informe o motivo do desligamento.');p.active=false;p.departureReason=args[1].trim()}else demoDB.professors=demoDB.professors.filter(x=>x.id!==p.id);
+    return reply({data:demoDB,message:history?'Professor desligado apenas na demonstra��o.':'Cadastro fict�cio exclu�do.'});
+  }
+  if(name==='reactivateProfessor'){const p=get(args[0]);if(!p)fail('Professor n�o encontrado.');p.active=true;p.departureReason='';return reply(demoDB);}
+  if(name==='addAbsenceReason'){const reason=args[0]?.trim();if(!reason)fail('Informe o motivo.');if(demoDB.reasons.some(r=>r.reason.toLowerCase()===reason.toLowerCase()))fail('Motivo j� cadastrado.');demoDB.reasons.push({reason,active:true});return reply(demoDB.reasons);}
+  if(name==='setAbsenceReasonActive'){const r=demoDB.reasons.find(r=>r.reason===args[0]);if(!r)fail('Motivo n�o encontrado.');r.active=!!args[1];return reply(demoDB.reasons);}
+  if(name==='addCoordinator'){const email=args[0]?.trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email||''))fail('Informe um e-mail v�lido.');if(demoDB.coordinators.includes(email))fail('Coordenador j� cadastrado.');demoDB.coordinators.push(email);return reply(demoDB.coordinators);}
+  if(name==='removeCoordinator'){if(demoDB.coordinators.length<=1)fail('Mantenha pelo menos um coordenador.');demoDB.coordinators=demoDB.coordinators.filter(x=>x!==args[0]);return reply(demoDB.coordinators);}
+  if(name==='exportBackup'){demoBackups.push(reply(demoDB));return {message:'Backup simulado criado em mem�ria. Nenhuma aba da planilha real foi criada.'};}
+  throw Error('Opera��o n�o simulada: '+name+'. Nenhum servi�o real foi chamado.');
+};
+const demoOriginalShell=shell,demoOriginalRender=render;
+const demoIcons={painel:'?',lancar:'?',relatorios:'?',ficha:'?',titulares:'?',substitutos:'?',motivos:'?',coordenadores:'?'};
+shell=function demoVisualShell(content){
+  let html=demoOriginalShell(content);
+  html=html.replace('<nav class="nav no-print">','<nav class="nav no-print" aria-label="Menu principal"><div class="demo-brand"><span class="demo-crest">U</span><div><b>Unichristus</b><small>CARGA HOR�RIA DOCENTE</small></div></div><div class="demo-navlabel">ACOMPANHAMENTO</div>');
+  html=html.replace('<div class="system-name">','<button type="button" class="theme-button demo-mobile" id="demo-mobile" aria-label="Abrir menu">?</button><div class="system-name">');
+  html=html.replace('<span class="user-email">','<button type="button" class="theme-button demo-collapse" id="demo-collapse" aria-label="Recolher ou expandir menu">?</button><span class="user-email">');
+  html=html.replace('<div class="fields no-print">','<div class="demo-banner no-print"><b>PR�VIA V02 � DADOS FICT�CIOS</b><span>Fluxos e impress�o originais preservados. As a��es afetam apenas exemplos nesta p�gina.</span><button type="button" id="demo-reset">Restaurar exemplos</button></div><div class="fields no-print">');
+  if(state.view==='painel')html=html.replace('<h1 class="page-title">','<div class="demo-hero no-print"><small>GEST�O ACAD�MICA � UNICHRISTUS</small><h2>Cada hora faz parte da forma��o.</h2><p>Mesmos fluxos de trabalho, uma nova apresenta��o.</p></div><h1 class="page-title">');
+  return html;
+};
+function demoBindVisual(){
+  const nav=document.querySelector('.nav'),details=nav?.querySelector('details');if(details){details.open=true;details.querySelector('summary').onclick=e=>e.preventDefault()}
+  nav?.querySelectorAll('[data-view]').forEach(b=>{b.dataset.icon=demoIcons[b.dataset.view]||'';b.title=b.textContent.trim();if(b.dataset.view===state.view)b.classList.add('active');const click=b.onclick;b.onclick=()=>{document.body.classList.remove('demo-menu-open');click()}});
+  if($('demo-collapse'))$('demo-collapse').onclick=()=>document.body.classList.toggle('demo-compact');
+  if($('demo-mobile'))$('demo-mobile').onclick=()=>document.body.classList.toggle('demo-menu-open');
+  if($('demo-reset'))$('demo-reset').onclick=()=>{if(!confirm('Restaurar os dados fict�cios desta demonstra��o?'))return;demoDB=demoInitialData();demoBackups=[];applyData(demoClone(demoDB));state.titularId=null;state.launchDate='';state.fichaId=null;notify('Exemplos restaurados. Nenhum dado real foi alterado.')};
+}
+render=function demoVisualRender(){demoOriginalRender();demoBindVisual()};
+// Chave pr�pria para n�o mudar a prefer�ncia do sistema real neste navegador.
+const demoOriginalTheme=setTheme;
+setTheme=function demoTheme(theme){document.body.dataset.theme=theme;try{localStorage.setItem('carga-horaria-preview-v02-theme',theme)}catch(e){}if($('theme'))$('theme').textContent=theme==='dark'?'?':'?'};
+initialTheme=function(){try{return localStorage.getItem('carga-horaria-preview-v02-theme')||'light'}catch(e){return 'light'}};
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert'),crypto=require('crypto');
+const root=__dirname,original=fs.readFileSync(path.join(root,'original-current.html'),'utf8');
+const css=fs.readFileSync(path.join(root,'preserved-screen.css'),'utf8');
+const bridge=fs.readFileSync(path.join(root,'preserved-demo.js'),'utf8');
+const template=/const svg = <\?!=[\s\S]*?\?>;/;
+assert(template.test(original),'Logo precisa ser resolvida explicitamente para prévia local.');
+const base=original.replace(template,'const svg = \'<strong>Unichristus</strong>\';');
+assert(!base.includes('<?'),'Template Apps Script não resolvido.');
+const before=base.match(/<script>([\s\S]*?)<\/script>/)[1];
+const initPosition=before.lastIndexOf('    init();');assert(initPosition>0);
+const originalCode=before.slice(0,initPosition)+before.slice(initPosition+'    init();'.length);
+new vm.Script(originalCode);new vm.Script(bridge);
+const script=before.slice(0,initPosition)+bridge+'\n'+before.slice(initPosition);
+let html=base.replace(before,()=>script).replace('</head>',()=>'<title>Carga Horária Docente · Prévia V02</title><style id="redesign-screen">\n'+css+'\n</style></head>');
+// CSS de impressão e todas as funções originais permanecem literais no arquivo.
+assert(html.includes(original.match(/<style>([\s\S]*?)<\/style>/)[0]));
+assert(script.includes(originalCode.slice(0,initPosition)));
+const names=[...originalCode.matchAll(/^    (?:async )?function (\w+)\(/gm)].map(x=>x[1]);
+const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
+const proof={originalHTML:sha(original),originalCSS:sha(original.match(/<style>([\s\S]*?)<\/style>/)[1]),originalFunctions:names,originalFunctionCount:names.length,changedOriginalFunctions:[],demoOverrides:['rpc','shell','render','setTheme','initialTheme'],logo:'Placeholder somente na prévia; arquivo Logo.html não fornecido',printedLayout:'CSS e funções originais preservados sem alteração'};
+fs.mkdirSync(path.join(root,'dist'),{recursive:true});fs.writeFileSync(path.join(root,'dist','index.html'),html);fs.writeFileSync(path.resolve(root,'../../outputs/carga-horaria-docente-previa-v02.html'),html);fs.writeFileSync(path.join(root,'preservation-proof.json'),JSON.stringify(proof,null,2));
+console.log(JSON.stringify({functions:names.length,preserved:true,output:'outputs/carga-horaria-docente-previa-v02.html'}));
